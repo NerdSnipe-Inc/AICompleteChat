@@ -125,6 +125,8 @@ struct VoiceHotkeysSettingsContent: View {
     var body: some View {
         sectionCard {
             sectionLabel("Global Hotkeys", icon: "keyboard")
+            voiceModelRow
+            Divider().opacity(0.25)
             accessibilityStatusRow
             Divider().opacity(0.25)
             dictationShortcutRow
@@ -141,6 +143,30 @@ struct VoiceHotkeysSettingsContent: View {
             }
         }
         .onDisappear { recorder.cancel() }
+    }
+
+    // MARK: - Voice Model
+
+    private var voiceModelRow: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Voice Model")
+                    .font(.subheadline)
+                    .foregroundStyle(theme.colors.textPrimary)
+                Text("Which speech recognizer transcribes dictation.")
+                    .font(.caption)
+                    .foregroundStyle(theme.colors.textSecondary)
+            }
+            Spacer()
+            Picker("Voice Model", selection: $voiceEngine.selectedASRModel) {
+                ForEach(ASRModelDescriptor.catalog) { descriptor in
+                    Text(descriptor.displayName).tag(descriptor.model)
+                }
+            }
+            .labelsHidden()
+            .pickerStyle(.menu)
+            .frame(width: 200)
+        }
     }
 
     // MARK: - Accessibility row

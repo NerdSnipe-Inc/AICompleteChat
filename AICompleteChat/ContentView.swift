@@ -6,6 +6,7 @@ import AIChatUI
 import AIChatMLX
 import AiPersona
 import AiVoiceKit
+import AppKit
 
 // NOTE (Task 12 judgment call): the brief's Step 2b `NoopChatProvider` placeholder existed to
 // satisfy ContentView's @ObservedObject property wrapper in a placeholder-then-swap init() — see
@@ -84,6 +85,7 @@ struct ContentView: View {
                     preferences: []
                 ),
                 voiceHotkeysContent: AnyView(VoiceHotkeysSettingsContent(voiceEngine: appEnvironment.voiceEngine)),
+                personaContent: AnyView(PersonaSettingsContent(personaStore: appEnvironment.personaStore)),
                 onReloadModel: { Task { await appEnvironment.loadModel() } },
                 onSystemPromptChange: { _ in /* not in Task 13's scope — no system-prompt persistence exists yet */ },
                 onTemperatureChange: { _ in /* not in Task 13's scope — no temperature persistence exists yet */ },
@@ -92,15 +94,17 @@ struct ContentView: View {
                 onExportHistory: { /* not in Task 13's scope — memory clear/export only, not chat history */ },
                 onClearMemory: { appEnvironment.memoryStore.deleteAll() },
                 onExportMemory: {
-                    // Task scope ends at producing the export payload — wiring it to a save panel
-                    // is a UI detail for whoever picks this up next (NSSavePanel +
-                    // JSONEncoder(export) is the straightforward path, matching how the rest of
-                    // this app writes files).
                     let export = GraphVisualizationExport.build(
                         fromEntities: appEnvironment.memoryStore.allEntities(),
                         activeFacts: appEnvironment.memoryStore.activeFacts()
                     )
-                    _ = export
+                    guard let data = try? JSONEncoder().encode(export) else { return }
+                    let panel = NSSavePanel()
+                    panel.allowedContentTypes = [.json]
+                    panel.nameFieldStringValue = "AICompleteChat-Memory.json"
+                    if panel.runModal() == .OK, let url = panel.url {
+                        try? data.write(to: url)
+                    }
                 },
                 onManageSubscription: { /* No subscription model yet — not in scope */ },
                 onDismiss: { showSettings = false }
