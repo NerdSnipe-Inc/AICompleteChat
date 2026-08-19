@@ -14,6 +14,9 @@
 		2D6F3E8B1B2C4F5E6D7E8F9A /* PersonaChatCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6F3E8A1B2C4F5E6D7E8F9A /* PersonaChatCoordinatorTests.swift */; };
 		2E7F4E9C1C3D5F6E7D8E9F0A /* FakeChatProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7F4E9B1C3D5F6E7D8E9F0A /* FakeChatProvider.swift */; };
 		2F8F5F0B1D4E6F7E8E9F0A1B /* PersonaChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8F5F0A1D4E6F7E8E9F0A1B /* PersonaChatCoordinator.swift */; };
+		3A7G6G1C2E5F7F8E9F0A1B2D /* MemorySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7G6G1B2E5F7F8E9F0A1B2D /* MemorySnapshot.swift */; };
+		3B8H7H2D3F6G8G9H0A1B2C3E /* MemorySnapshotProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8H7H2C3F6G8G9H0A1B2C3E /* MemorySnapshotProvider.swift */; };
+		3C9I8I3E4G7H9H0I1B2C3D4F /* MemorySnapshotProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9I8I3D4G7H9H0I1B2C3D4F /* MemorySnapshotProviderTests.swift */; };
 		3F6462A2E0577961E82AFBCA /* AiPersona in Frameworks */ = {isa = PBXBuildFile; productRef = 81ADEA171303DB61E8462E1E /* AiPersona */; };
 		8A6112C285D2B607E7D1094E /* DesignFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 9525AB06788853078320E4C9 /* DesignFoundation */; };
 		98E0EF0E04D7B5D1287481A8 /* AiVoiceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1EF714916DEA7B5E2AEE2BE5 /* AiVoiceKit */; };
@@ -37,6 +40,9 @@
 		2D6F3E8A1B2C4F5E6D7E8F9A /* PersonaChatCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaChatCoordinatorTests.swift; sourceTree = "<group>"; };
 		2E7F4E9B1C3D5F6E7D8E9F0A /* FakeChatProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeChatProvider.swift; sourceTree = "<group>"; };
 		2F8F5F0A1D4E6F7E8E9F0A1B /* PersonaChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaChatCoordinator.swift; sourceTree = "<group>"; };
+		3A7G6G1B2E5F7F8E9F0A1B2D /* MemorySnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySnapshot.swift; sourceTree = "<group>"; };
+		3B8H7H2C3F6G8G9H0A1B2C3E /* MemorySnapshotProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySnapshotProvider.swift; sourceTree = "<group>"; };
+		3C9I8I3D4G7H9H0I1B2C3D4F /* MemorySnapshotProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySnapshotProviderTests.swift; sourceTree = "<group>"; };
 		3300CBEE530C165EE2CC6338 /* AiVoiceKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AiVoiceKit; path = "../../../../xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit"; sourceTree = SOURCE_ROOT; };
 		47C3835D8CE9C34D54280BDE /* AICompleteChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AICompleteChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A56B859B9FF3D1557A2D131 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -103,6 +109,8 @@
 			isa = PBXGroup;
 			children = (
 				2F8F5F0A1D4E6F7E8E9F0A1B /* PersonaChatCoordinator.swift */,
+				3A7G6G1B2E5F7F8E9F0A1B2D /* MemorySnapshot.swift */,
+				3B8H7H2C3F6G8G9H0A1B2C3E /* MemorySnapshotProvider.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -112,6 +120,7 @@
 			children = (
 				2D6F3E8A1B2C4F5E6D7E8F9A /* PersonaChatCoordinatorTests.swift */,
 				2E7F4E9B1C3D5F6E7D8E9F0A /* FakeChatProvider.swift */,
+				3C9I8I3D4G7H9H0I1B2C3D4F /* MemorySnapshotProviderTests.swift */,
 				8A56B859B9FF3D1557A2D131 /* Info.plist */,
 			);
 			path = AICompleteChatTests;
@@ -223,6 +232,7 @@
 			files = (
 				2D6F3E8B1B2C4F5E6D7E8F9A /* PersonaChatCoordinatorTests.swift in Sources */,
 				2E7F4E9C1C3D5F6E7D8E9F0A /* FakeChatProvider.swift in Sources */,
+				3C9I8I3E4G7H9H0I1B2C3D4F /* MemorySnapshotProviderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +243,8 @@
 				1379C213C06C8A44308E29D3 /* AICompleteChatApp.swift in Sources */,
 				28E2F1A91EB6A03AC89F8D18 /* ContentView.swift in Sources */,
 				2F8F5F0B1D4E6F7E8E9F0A1B /* PersonaChatCoordinator.swift in Sources */,
+				3A7G6G1C2E5F7F8E9F0A1B2D /* MemorySnapshot.swift in Sources */,
+				3B8H7H2D3F6G8G9H0A1B2C3E /* MemorySnapshotProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
