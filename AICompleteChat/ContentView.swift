@@ -52,7 +52,9 @@ struct ContentView: View {
             isInspectorVisible: $isInspectorVisible,
             micPermissionGranted: appEnvironment.micPermissionGranted,
             accessibilityPermissionGranted: appEnvironment.accessibilityPermissionGranted,
-            onOpenSystemSettings: { appEnvironment.openSystemSettingsForPermissions() }
+            onOpenSystemSettings: { appEnvironment.openSystemSettingsForPermissions() },
+            onSettings: { showSettings = true },
+            isStreaming: session.isGenerating
         )
         .task { await appEnvironment.loadModel() }
         .sheet(isPresented: $showSettings) {
