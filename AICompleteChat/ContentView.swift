@@ -9,10 +9,7 @@ import AiVoiceKit
 
 struct ContentView: View {
     var body: some View {
-        VStack(spacing: 20) {
-            Text("AICompleteChat")
-                .font(.title)
-                .padding()
-        }
+        DFText("AICompleteChat", scale: .title)
+            .padding()
     }
 }
