@@ -13,7 +13,7 @@ packages:
   AIChatKitMLX:
     path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX
   AiPersona:
-    path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona
+    path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona/.worktrees/aicompletechat-memory-reset
   AiVoiceKit:
     path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit
 targets:
