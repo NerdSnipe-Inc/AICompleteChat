@@ -1,5 +1,6 @@
 import Foundation
 import AiPersona
+import DesignFoundationPro
 
 @MainActor
 enum MemorySnapshotProvider {
