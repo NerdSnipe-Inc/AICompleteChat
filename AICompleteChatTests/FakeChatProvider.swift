@@ -7,7 +7,7 @@ final class FakeChatProvider: ChatProvider, @unchecked Sendable {
     let name = "Fake"
     var zeroResponseMessage: String { "no response" }
 
-    var responseText: String = "Fake assistant response."
+    var responseText: String = "Hi"
     private(set) var lastSystemPrompt: String?
     private(set) var lastMessages: [ChatMessage] = []
 

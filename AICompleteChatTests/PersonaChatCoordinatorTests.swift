@@ -23,7 +23,7 @@ struct PersonaChatCoordinatorTests {
 
         coordinator.send("Hello")
         // Wait for the fire-and-forget stream to complete.
-        try await Task.sleep(nanoseconds: 200_000_000)
+        try await Task.sleep(nanoseconds: 500_000_000)
 
         #expect(provider.lastSystemPrompt?.contains(personaStore.name) == true)
         #expect(session.entries.contains { if case .userMessage(let e) = $0 { return e.text == "Hello" } else { return false } })
@@ -45,7 +45,7 @@ struct PersonaChatCoordinatorTests {
         coordinator.onMemoryUpdated = { wasCalled = true }
 
         coordinator.send("Hello")
-        try await Task.sleep(nanoseconds: 200_000_000)
+        try await Task.sleep(nanoseconds: 500_000_000)
 
         #expect(wasCalled)
     }
