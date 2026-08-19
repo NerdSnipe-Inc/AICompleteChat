@@ -14,6 +14,7 @@
 		2D6F3E8B1B2C4F5E6D7E8F9A /* PersonaChatCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6F3E8A1B2C4F5E6D7E8F9A /* PersonaChatCoordinatorTests.swift */; };
 		2E7F4E9C1C3D5F6E7D8E9F0A /* FakeChatProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7F4E9B1C3D5F6E7D8E9F0A /* FakeChatProvider.swift */; };
 		2F8F5F0B1D4E6F7E8E9F0A1B /* PersonaChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8F5F0A1D4E6F7E8E9F0A1B /* PersonaChatCoordinator.swift */; };
+		4C9J9J4F5H8I0I1J2C3D4E5G /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9J9J4E5H8I0I1J2C3D4E5G /* AppEnvironment.swift */; };
 		3B8H7H2D3F6G8G9H0A1B2C3E /* MemorySnapshotProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8H7H2C3F6G8G9H0A1B2C3E /* MemorySnapshotProvider.swift */; };
 		3C9I8I3E4G7H9H0I1B2C3D4F /* MemorySnapshotProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9I8I3D4G7H9H0I1B2C3D4F /* MemorySnapshotProviderTests.swift */; };
 		3F6462A2E0577961E82AFBCA /* AiPersona in Frameworks */ = {isa = PBXBuildFile; productRef = 81ADEA171303DB61E8462E1E /* AiPersona */; };
@@ -39,6 +40,7 @@
 		2D6F3E8A1B2C4F5E6D7E8F9A /* PersonaChatCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaChatCoordinatorTests.swift; sourceTree = "<group>"; };
 		2E7F4E9B1C3D5F6E7D8E9F0A /* FakeChatProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeChatProvider.swift; sourceTree = "<group>"; };
 		2F8F5F0A1D4E6F7E8E9F0A1B /* PersonaChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaChatCoordinator.swift; sourceTree = "<group>"; };
+		4C9J9J4E5H8I0I1J2C3D4E5G /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		3B8H7H2C3F6G8G9H0A1B2C3E /* MemorySnapshotProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySnapshotProvider.swift; sourceTree = "<group>"; };
 		3C9I8I3D4G7H9H0I1B2C3D4F /* MemorySnapshotProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySnapshotProviderTests.swift; sourceTree = "<group>"; };
 		3300CBEE530C165EE2CC6338 /* AiVoiceKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AiVoiceKit; path = "../../../../xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit"; sourceTree = SOURCE_ROOT; };
@@ -108,6 +110,7 @@
 			children = (
 				2F8F5F0A1D4E6F7E8E9F0A1B /* PersonaChatCoordinator.swift */,
 				3B8H7H2C3F6G8G9H0A1B2C3E /* MemorySnapshotProvider.swift */,
+				4C9J9J4E5H8I0I1J2C3D4E5G /* AppEnvironment.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				28E2F1A91EB6A03AC89F8D18 /* ContentView.swift in Sources */,
 				2F8F5F0B1D4E6F7E8E9F0A1B /* PersonaChatCoordinator.swift in Sources */,
 				3B8H7H2D3F6G8G9H0A1B2C3E /* MemorySnapshotProvider.swift in Sources */,
+				4C9J9J4F5H8I0I1J2C3D4E5G /* AppEnvironment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
