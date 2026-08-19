@@ -51,15 +51,15 @@ struct ContentView: View {
             memorySnapshot: currentMemorySnapshot,
             isInspectorVisible: $isInspectorVisible
         )
+        .task { await appEnvironment.loadModel() }
         .sheet(isPresented: $showSettings) {
             DFAIChatSettingsSheet(configuration: .init(
                 model: currentModel,
-                // Judgment call (Task 12): DFAIChatSettingsSheet.Configuration grew several
-                // model-tuning / account / notification fields since this task's brief was
-                // written. Those aren't wired to real state yet — Task 13 owns real reload/
-                // clear/export/system-prompt wiring — so they're seeded with the model's
-                // current values and no-op callbacks here, matching the placeholder pattern the
-                // brief already established for onReloadModel/onClearMemory/onExportMemory.
+                // Judgment call (Task 12, still true post-Task-13): DFAIChatSettingsSheet.
+                // Configuration grew several model-tuning / account / notification fields since
+                // this task's brief was written. System-prompt/temperature/max-tokens persistence
+                // isn't in Task 13's scope (only reload/clear/export are) — those three remain
+                // seeded with fixed values and no-op callbacks here.
                 systemPrompt: "",
                 temperature: 0.8,
                 maxTokens: 2048,
@@ -79,14 +79,24 @@ struct ContentView: View {
                     preferences: []
                 ),
                 voiceHotkeysContent: AnyView(VoiceHotkeysSettingsContent(voiceEngine: appEnvironment.voiceEngine)),
-                onReloadModel: { /* Task 13 wires actual reload */ },
-                onSystemPromptChange: { _ in /* Task 13 wires actual system prompt persistence */ },
-                onTemperatureChange: { _ in /* Task 13 wires actual temperature persistence */ },
-                onMaxTokensChange: { _ in /* Task 13 wires actual max-tokens persistence */ },
-                onClearHistory: { /* Task 13 wires actual history clear */ },
-                onExportHistory: { /* Task 13 wires actual history export */ },
-                onClearMemory: { /* Task 13 wires actual clear */ },
-                onExportMemory: { /* Task 13 wires actual export */ },
+                onReloadModel: { Task { await appEnvironment.loadModel() } },
+                onSystemPromptChange: { _ in /* not in Task 13's scope — no system-prompt persistence exists yet */ },
+                onTemperatureChange: { _ in /* not in Task 13's scope — no temperature persistence exists yet */ },
+                onMaxTokensChange: { _ in /* not in Task 13's scope — no max-tokens persistence exists yet */ },
+                onClearHistory: { /* not in Task 13's scope — memory clear/export only, not chat history */ },
+                onExportHistory: { /* not in Task 13's scope — memory clear/export only, not chat history */ },
+                onClearMemory: { appEnvironment.memoryStore.deleteAll() },
+                onExportMemory: {
+                    // Task scope ends at producing the export payload — wiring it to a save panel
+                    // is a UI detail for whoever picks this up next (NSSavePanel +
+                    // JSONEncoder(export) is the straightforward path, matching how the rest of
+                    // this app writes files).
+                    let export = GraphVisualizationExport.build(
+                        fromEntities: appEnvironment.memoryStore.allEntities(),
+                        activeFacts: appEnvironment.memoryStore.activeFacts()
+                    )
+                    _ = export
+                },
                 onManageSubscription: { /* No subscription model yet — not in scope */ },
                 onDismiss: { showSettings = false }
             ))
@@ -123,7 +133,7 @@ struct ContentView: View {
             id: MLXProvider.recommendedModelId(),
             displayName: "Gemma 4 e4b",
             ramTier: "<16GB",
-            loadState: .ready // Task 13 replaces this with real MLXProvider load-state tracking
+            loadState: appEnvironment.modelLoadState
         )
     }
 

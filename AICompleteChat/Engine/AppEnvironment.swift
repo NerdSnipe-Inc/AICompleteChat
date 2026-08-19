@@ -5,6 +5,7 @@ import AIChatUI
 import AIChatMLX
 import AiPersona
 import AiVoiceKit
+import DesignFoundationPro
 
 @MainActor
 @Observable
@@ -16,6 +17,11 @@ final class AppEnvironment {
     let personaStore: PersonaStore
     let coordinator: PersonaChatCoordinator
     let voiceEngine: VoiceEngineMacOS
+
+    /// Real load-state for the on-device MLX model, replacing Task 12's hardcoded `.ready`
+    /// placeholder in ContentView's `currentModel`. Starts at `.notLoaded` until `loadModel()` is
+    /// called (from ContentView's `.task` modifier, so it kicks off automatically at launch).
+    var modelLoadState: AIChatModelLoadState = .notLoaded
 
     /// Bumped by `coordinator.onMemoryUpdated` after each background ingestion completes.
     /// `AppEnvironment` is `@Observable`, so any view reading this property re-renders when it
@@ -70,5 +76,23 @@ final class AppEnvironment {
         // `self` (even weakly) inside `init` until all stored properties are initialized, and
         // `self.voiceEngine` (assigned just above) was the last one.
         coordinator.onMemoryUpdated = { [weak self] in self?.memoryUpdateTick += 1 }
+    }
+
+    /// Loads the on-device MLX model, tracking real progress in `modelLoadState` so the New
+    /// Screen can show genuine download progress instead of Task 12's hardcoded `.ready`.
+    /// Called from ContentView's `.task` modifier at launch, and again from Settings'
+    /// "Reload Model" action.
+    func loadModel() async {
+        modelLoadState = .downloading(progress: 0)
+        do {
+            try await mlxProvider.loadModel { progress in
+                Task { @MainActor in
+                    self.modelLoadState = .downloading(progress: progress.fractionCompleted)
+                }
+            }
+            modelLoadState = .ready
+        } catch {
+            modelLoadState = .error(error.localizedDescription)
+        }
     }
 }
