@@ -42,7 +42,7 @@ struct ContentView: View {
 
     var body: some View {
         DFAIChatRootView(
-            conversations: [liveConversation],
+            conversations: appEnvironment.modelLoadState == .ready ? [liveConversation] : [],
             model: currentModel,
             onSend: { text in appEnvironment.coordinator.send(text) },
             voiceState: mappedVoiceState,
