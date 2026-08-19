@@ -37,23 +37,23 @@
 
 /* Begin PBXFileReference section */
 		051AB9C20ACCEFA842F1CA86 /* AICompleteChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AICompleteChatApp.swift; sourceTree = "<group>"; };
-		13DE964E91FD7CF36F319C56 /* AIChatKitMLX */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AIChatKitMLX; path = "../../../../xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX"; sourceTree = SOURCE_ROOT; };
+		13DE964E91FD7CF36F319C56 /* AIChatKitMLX */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AIChatKitMLX; path = "../../xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX"; sourceTree = SOURCE_ROOT; };
 		1F4F1F62BF824236C6B9EFF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		28344A12C878DBAA5EFA6A64 /* MemorySnapshotProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySnapshotProvider.swift; sourceTree = "<group>"; };
-		3300CBEE530C165EE2CC6338 /* AiVoiceKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AiVoiceKit; path = "../../../../xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit"; sourceTree = SOURCE_ROOT; };
+		3300CBEE530C165EE2CC6338 /* AiVoiceKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AiVoiceKit; path = "../../xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit"; sourceTree = SOURCE_ROOT; };
 		3E040AAEEF662D832CC6E822 /* PersonaChatCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaChatCoordinatorTests.swift; sourceTree = "<group>"; };
 		47C3835D8CE9C34D54280BDE /* AICompleteChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AICompleteChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		67A163B9EF3DB5A0458A41ED /* PersonaChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaChatCoordinator.swift; sourceTree = "<group>"; };
+		67BF38EC45B01296F185EE10 /* DesignFoundationPro */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignFoundationPro; path = ../DesignFoundationPro; sourceTree = SOURCE_ROOT; };
 		6847657B41A4152647DDFF35 /* FakeChatProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeChatProvider.swift; sourceTree = "<group>"; };
 		8A56B859B9FF3D1557A2D131 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		97FAA7E699FC542D3EDD0FBC /* VoiceHotkeysSettingsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceHotkeysSettingsContent.swift; sourceTree = "<group>"; };
+		A5DC3EB41BCD9C131FCF0E11 /* AiPersona */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AiPersona; path = "../../xCodeProjects/NerdSnipe-Inc-Packages/AiPersona"; sourceTree = SOURCE_ROOT; };
 		A5F744B685F0372BFF1CFC1E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		A8B9D51A9F7E54334E5AD00F /* aicompletechat-memory-reset */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "aicompletechat-memory-reset"; path = "../../../../xCodeProjects/NerdSnipe-Inc-Packages/AiPersona/.worktrees/aicompletechat-memory-reset"; sourceTree = SOURCE_ROOT; };
 		AB2B0907CE141146F6067F91 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		B1A637DEEB482B484813310D /* AICompleteChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AICompleteChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B3F9D5BEC44B7F804CE17746 /* DesignFoundation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignFoundation; path = ../../../DesignFoundation; sourceTree = SOURCE_ROOT; };
-		D190C325B5ADCE6F7BB2C6C1 /* DesignFoundationPro-wt-aichat-ondevice-redesign */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "DesignFoundationPro-wt-aichat-ondevice-redesign"; path = "../../../DesignFoundationPro-wt-aichat-ondevice-redesign"; sourceTree = SOURCE_ROOT; };
-		DED37567FC131867BEF1D274 /* AIChatKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AIChatKit; path = "../../../../xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit"; sourceTree = SOURCE_ROOT; };
+		B3F9D5BEC44B7F804CE17746 /* DesignFoundation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignFoundation; path = ../DesignFoundation; sourceTree = SOURCE_ROOT; };
+		DED37567FC131867BEF1D274 /* AIChatKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AIChatKit; path = "../../xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit"; sourceTree = SOURCE_ROOT; };
 		EF1AE935A9D0EB836050C565 /* MemorySnapshotProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySnapshotProviderTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,10 +107,10 @@
 			children = (
 				DED37567FC131867BEF1D274 /* AIChatKit */,
 				13DE964E91FD7CF36F319C56 /* AIChatKitMLX */,
-				A8B9D51A9F7E54334E5AD00F /* aicompletechat-memory-reset */,
+				A5DC3EB41BCD9C131FCF0E11 /* AiPersona */,
 				3300CBEE530C165EE2CC6338 /* AiVoiceKit */,
 				B3F9D5BEC44B7F804CE17746 /* DesignFoundation */,
-				D190C325B5ADCE6F7BB2C6C1 /* DesignFoundationPro-wt-aichat-ondevice-redesign */,
+				67BF38EC45B01296F185EE10 /* DesignFoundationPro */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -221,10 +221,10 @@
 			packageReferences = (
 				B1A8C10731B45B9AE09E2422 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit" */,
 				A7BE2CB8E5DE7A32BCCC86C2 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX" */,
-				7FE60B05F4D1EC875B5A8CD9 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona/.worktrees/aicompletechat-memory-reset" */,
+				F5FFC2E5952FE197CF4046E5 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona" */,
 				238027C3299C13D58306D63A /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit" */,
 				C63AB346E8F8C76E9E04FB06 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundation" */,
-				A1B400C7D4A82094F23A8A99 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundationPro-wt-aichat-ondevice-redesign" */,
+				7A3BC292C337560E6298D085 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundationPro" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1028251411FDA5834DF9E4AF /* Products */;
@@ -506,13 +506,9 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit";
 		};
-		7FE60B05F4D1EC875B5A8CD9 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona/.worktrees/aicompletechat-memory-reset" */ = {
+		7A3BC292C337560E6298D085 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundationPro" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona/.worktrees/aicompletechat-memory-reset";
-		};
-		A1B400C7D4A82094F23A8A99 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundationPro-wt-aichat-ondevice-redesign" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "/Users/nerdsnipe/Projects/DesignFoundationPro-wt-aichat-ondevice-redesign";
+			relativePath = /Users/nerdsnipe/Projects/DesignFoundationPro;
 		};
 		A7BE2CB8E5DE7A32BCCC86C2 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX" */ = {
 			isa = XCLocalSwiftPackageReference;
@@ -525,6 +521,10 @@
 		C63AB346E8F8C76E9E04FB06 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundation" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = /Users/nerdsnipe/Projects/DesignFoundation;
+		};
+		F5FFC2E5952FE197CF4046E5 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona";
 		};
 /* End XCLocalSwiftPackageReference section */
 

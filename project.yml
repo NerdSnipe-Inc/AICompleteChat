@@ -7,13 +7,13 @@ packages:
   DesignFoundation:
     path: /Users/nerdsnipe/Projects/DesignFoundation
   DesignFoundationPro:
-    path: /Users/nerdsnipe/Projects/DesignFoundationPro-wt-aichat-ondevice-redesign
+    path: /Users/nerdsnipe/Projects/DesignFoundationPro
   AIChatKit:
     path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit
   AIChatKitMLX:
     path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX
   AiPersona:
-    path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona/.worktrees/aicompletechat-memory-reset
+    path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona
   AiVoiceKit:
     path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit
 targets:
