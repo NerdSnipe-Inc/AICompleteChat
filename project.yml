@@ -1,0 +1,59 @@
+name: AICompleteChat
+options:
+  bundleIdPrefix: com.nerdsnipe
+  deploymentTarget:
+    macOS: "15.0"
+packages:
+  DesignFoundation:
+    path: /Users/nerdsnipe/Projects/DesignFoundation
+  DesignFoundationPro:
+    path: /Users/nerdsnipe/Projects/DesignFoundationPro-wt-aichat-ondevice-redesign
+  AIChatKit:
+    path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit
+  AIChatKitMLX:
+    path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX
+  AiPersona:
+    path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona
+  AiVoiceKit:
+    path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit
+targets:
+  AICompleteChat:
+    type: application
+    platform: macOS
+    sources:
+      - AICompleteChat
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nerdsnipe.aicompletechat
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "6.0"
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: QW2MDLZZJH
+        "CODE_SIGN_IDENTITY[sdk=macosx*]": "Apple Development"
+    info:
+      path: AICompleteChat/Info.plist
+      properties:
+        CFBundleDisplayName: AICompleteChat
+        LSMinimumSystemVersion: "15.0"
+    dependencies:
+      - package: DesignFoundation
+      - package: DesignFoundationPro
+      - package: AIChatKit
+        product: AIChatCore
+      - package: AIChatKit
+        product: AIChatUI
+      - package: AIChatKitMLX
+        product: AIChatMLX
+      - package: AiPersona
+      - package: AiVoiceKit
+  AICompleteChatTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - AICompleteChatTests
+    settings:
+      base:
+        SWIFT_VERSION: "6.0"
+    dependencies:
+      - target: AICompleteChat
