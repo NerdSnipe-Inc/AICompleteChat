@@ -6,6 +6,9 @@ import AIChatMLX
 import AiPersona
 import AiVoiceKit
 import DesignFoundationPro
+import AVFoundation
+import ApplicationServices
+import AppKit
 
 @MainActor
 @Observable
@@ -76,6 +79,42 @@ final class AppEnvironment {
         // `self` (even weakly) inside `init` until all stored properties are initialized, and
         // `self.voiceEngine` (assigned just above) was the last one.
         coordinator.onMemoryUpdated = { [weak self] in self?.memoryUpdateTick += 1 }
+    }
+
+    // MARK: - Permission checks (Task 14)
+    //
+    // Mirrors Alric's proven, shipped pattern: `AVCaptureDevice.authorizationStatus(for:)` for
+    // mic (see alric/Features/Voice/Settings/VoiceEngineSettingsView.swift) and
+    // `AXIsProcessTrusted()` for Accessibility (see
+    // alric/Features/Voice/Settings/VoiceHotkeysSettingsView.swift). These are computed, not
+    // cached — they're read fresh by ContentView on each body evaluation, same as Alric's
+    // `.onAppear` refresh does for its own settings rows.
+
+    /// Whether microphone access is currently authorized. Feeds `DFAIChatNewScreen`'s mic
+    /// permission banner via `DFAIChatRootView`.
+    var micPermissionGranted: Bool {
+        AVCaptureDevice.authorizationStatus(for: .audio) == .authorized
+    }
+
+    /// Whether this process is trusted for Accessibility (required for global hotkey capture).
+    /// Feeds `DFAIChatNewScreen`'s Accessibility permission banner via `DFAIChatRootView`.
+    var accessibilityPermissionGranted: Bool {
+        AXIsProcessTrusted()
+    }
+
+    /// Requests mic access via the system prompt. Only has an effect the first time — once the
+    /// user has answered (either way), `AVCaptureDevice.requestAccess` returns immediately with
+    /// the prior answer and the user must go to System Settings to change it.
+    func requestMicPermission() async {
+        _ = await AVCaptureDevice.requestAccess(for: .audio)
+    }
+
+    /// Opens System Settings to the microphone privacy pane — the same deep link Alric's own
+    /// mic permission row uses (`VoiceEngineSettingsView.swift`).
+    func openSystemSettingsForPermissions() {
+        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone") {
+            NSWorkspace.shared.open(url)
+        }
     }
 
     /// Loads the on-device MLX model, tracking real progress in `modelLoadState` so the New

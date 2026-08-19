@@ -22,5 +22,7 @@
 	<string>1</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>15.0</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>AICompleteChat uses your microphone for voice dictation and voice commands.</string>
 </dict>
 </plist>

@@ -36,6 +36,7 @@ targets:
       properties:
         CFBundleDisplayName: AICompleteChat
         LSMinimumSystemVersion: "15.0"
+        NSMicrophoneUsageDescription: "AICompleteChat uses your microphone for voice dictation and voice commands."
     dependencies:
       - package: DesignFoundation
       - package: DesignFoundationPro

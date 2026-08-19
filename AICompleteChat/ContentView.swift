@@ -49,7 +49,10 @@ struct ContentView: View {
             voiceTranscript: voiceEngine.transcript,
             onMicTapped: { Task { await toggleDictation() } },
             memorySnapshot: currentMemorySnapshot,
-            isInspectorVisible: $isInspectorVisible
+            isInspectorVisible: $isInspectorVisible,
+            micPermissionGranted: appEnvironment.micPermissionGranted,
+            accessibilityPermissionGranted: appEnvironment.accessibilityPermissionGranted,
+            onOpenSystemSettings: { appEnvironment.openSystemSettingsForPermissions() }
         )
         .task { await appEnvironment.loadModel() }
         .sheet(isPresented: $showSettings) {
