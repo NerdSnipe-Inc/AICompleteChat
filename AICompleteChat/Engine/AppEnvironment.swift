@@ -20,6 +20,7 @@ final class AppEnvironment {
     let personaStore: PersonaStore
     let coordinator: PersonaChatCoordinator
     let voiceEngine: VoiceEngineMacOS
+    let chatHistory: ChatHistoryStore
 
     /// Real load-state for the on-device MLX model, replacing Task 12's hardcoded `.ready`
     /// placeholder in ContentView's `currentModel`. Starts at `.notLoaded` until `loadModel()` is
@@ -50,6 +51,7 @@ final class AppEnvironment {
         self.retrieval = retrieval
         self.personaStore = personaStore
         self.coordinator = coordinator
+        self.chatHistory = ChatHistoryStore()
 
         // VoiceEngineMacOS's closures must be assigned after `coordinator` exists (it needs
         // `self` to be fully initialized first) — this is the documented pattern in
@@ -121,6 +123,29 @@ final class AppEnvironment {
     /// Screen can show genuine download progress instead of Task 12's hardcoded `.ready`.
     /// Called from ContentView's `.task` modifier at launch, and again from Settings'
     /// "Reload Model" action.
+    /// Records the human user's own name into the memory graph as a real, durable entity + fact —
+    /// so the model actually knows who it's talking to, and the name shows up in the Memory
+    /// browser like any other known fact rather than only living in a settings field nobody but
+    /// the sidebar footer reads. Called after `PersonaSettingsContent` actually changes
+    /// `personaStore.userName` (a no-op save is filtered out before this is invoked).
+    func rememberUserName(_ name: String) {
+        guard !name.isEmpty else { return }
+        let entity = memoryStore.upsertEntity(
+            name: name, summary: "The person using this app.", kind: .user,
+            embedding: LocalEmbedder.embed(name)
+        )
+        let factText = "The user's name is \(name)."
+        let alreadyKnown = memoryStore.activeFacts().contains {
+            $0.subjectID == entity.id && $0.factText.caseInsensitiveCompare(factText) == .orderedSame
+        }
+        guard !alreadyKnown else { return }
+        memoryStore.addFact(
+            subjectID: entity.id, objectID: nil, predicate: "is named",
+            factText: factText, embedding: LocalEmbedder.embed(factText)
+        )
+        memoryUpdateTick += 1
+    }
+
     func loadModel() async {
         modelLoadState = .downloading(progress: 0)
         do {

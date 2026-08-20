@@ -13,6 +13,8 @@
 		25CD0078A70C434F004A3E6A /* AIChatMLX in Frameworks */ = {isa = PBXBuildFile; productRef = 88A36470B1ADEDA7BCB845B3 /* AIChatMLX */; };
 		28E2F1A91EB6A03AC89F8D18 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F744B685F0372BFF1CFC1E /* ContentView.swift */; };
 		3F6462A2E0577961E82AFBCA /* AiPersona in Frameworks */ = {isa = PBXBuildFile; productRef = 81ADEA171303DB61E8462E1E /* AiPersona */; };
+		49090B98CB37960AC6E3D50B /* MemoryBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF146FD0126FA3AA7C2F86D9 /* MemoryBrowserView.swift */; };
+		53389ED7526937A48271EE72 /* ChatHistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A048DEB17D526A5B47F26BA /* ChatHistoryStore.swift */; };
 		8A6112C285D2B607E7D1094E /* DesignFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 9525AB06788853078320E4C9 /* DesignFoundation */; };
 		98E0EF0E04D7B5D1287481A8 /* AiVoiceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1EF714916DEA7B5E2AEE2BE5 /* AiVoiceKit */; };
 		992CD10DAFA1163413BD11C7 /* FakeChatProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6847657B41A4152647DDFF35 /* FakeChatProvider.swift */; };
@@ -47,6 +49,7 @@
 		67A163B9EF3DB5A0458A41ED /* PersonaChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaChatCoordinator.swift; sourceTree = "<group>"; };
 		67BF38EC45B01296F185EE10 /* DesignFoundationPro */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignFoundationPro; path = ../DesignFoundationPro; sourceTree = SOURCE_ROOT; };
 		6847657B41A4152647DDFF35 /* FakeChatProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeChatProvider.swift; sourceTree = "<group>"; };
+		6A048DEB17D526A5B47F26BA /* ChatHistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHistoryStore.swift; sourceTree = "<group>"; };
 		8A56B859B9FF3D1557A2D131 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		97FAA7E699FC542D3EDD0FBC /* VoiceHotkeysSettingsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceHotkeysSettingsContent.swift; sourceTree = "<group>"; };
 		A5DC3EB41BCD9C131FCF0E11 /* AiPersona */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AiPersona; path = "../../xCodeProjects/NerdSnipe-Inc-Packages/AiPersona"; sourceTree = SOURCE_ROOT; };
@@ -54,6 +57,7 @@
 		AB2B0907CE141146F6067F91 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		B1A637DEEB482B484813310D /* AICompleteChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AICompleteChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3F9D5BEC44B7F804CE17746 /* DesignFoundation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignFoundation; path = ../DesignFoundation; sourceTree = SOURCE_ROOT; };
+		BF146FD0126FA3AA7C2F86D9 /* MemoryBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBrowserView.swift; sourceTree = "<group>"; };
 		DED37567FC131867BEF1D274 /* AIChatKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AIChatKit; path = "../../xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit"; sourceTree = SOURCE_ROOT; };
 		E035A4433DD8024D2D5884B3 /* PersonaSettingsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaSettingsContent.swift; sourceTree = "<group>"; };
 		EF1AE935A9D0EB836050C565 /* MemorySnapshotProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySnapshotProviderTests.swift; sourceTree = "<group>"; };
@@ -99,10 +103,19 @@
 		2C83D3611415FF73B64D5695 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				BF146FD0126FA3AA7C2F86D9 /* MemoryBrowserView.swift */,
 				E035A4433DD8024D2D5884B3 /* PersonaSettingsContent.swift */,
 				97FAA7E699FC542D3EDD0FBC /* VoiceHotkeysSettingsContent.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		745AEBA5572371740A6819FA /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				6A048DEB17D526A5B47F26BA /* ChatHistoryStore.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 		78B69F2C9498D71D27333450 /* Packages */ = {
@@ -124,6 +137,7 @@
 				051AB9C20ACCEFA842F1CA86 /* AICompleteChatApp.swift */,
 				A5F744B685F0372BFF1CFC1E /* ContentView.swift */,
 				8A56B859B9FF3D1557A2D131 /* Info.plist */,
+				745AEBA5572371740A6819FA /* Core */,
 				0A167F8FCDDB9C614776A463 /* Engine */,
 				2C83D3611415FF73B64D5695 /* Settings */,
 			);
@@ -257,7 +271,9 @@
 			files = (
 				1379C213C06C8A44308E29D3 /* AICompleteChatApp.swift in Sources */,
 				A8C14F6CC03F0096F9B40305 /* AppEnvironment.swift in Sources */,
+				53389ED7526937A48271EE72 /* ChatHistoryStore.swift in Sources */,
 				28E2F1A91EB6A03AC89F8D18 /* ContentView.swift in Sources */,
+				49090B98CB37960AC6E3D50B /* MemoryBrowserView.swift in Sources */,
 				B69BB5EA64F04009AF626A13 /* MemorySnapshotProvider.swift in Sources */,
 				0B7F6D6F6BA4124A9CECE83F /* PersonaChatCoordinator.swift in Sources */,
 				FFB344A2457FBDA246DE8542 /* PersonaSettingsContent.swift in Sources */,

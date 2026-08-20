@@ -30,10 +30,10 @@ struct ContentView: View {
     @ObservedObject private var session: ChatSession
     @State private var showSettings = false
     @State private var isInspectorVisible = false
-    // Stable across re-renders (State's initialValue is only used once, at first materialization)
-    // — DFAIChatRootView keys its sidebar selection off this id, so it must not change on every
-    // redraw the way a plain `let liveConversationID = UUID()` would.
-    @State private var liveConversationID = UUID()
+    @State private var chatRecords: [ChatRecord] = []
+    @State private var activeChatID: UUID?
+    @State private var showMemoryBrowser = false
+    @State private var voiceErrorMessage: String?
 
     init(appEnvironment: AppEnvironment) {
         self.appEnvironment = appEnvironment
@@ -43,9 +43,14 @@ struct ContentView: View {
 
     var body: some View {
         DFAIChatRootView(
-            conversations: appEnvironment.modelLoadState == .ready ? [liveConversation] : [],
+            conversations: appEnvironment.modelLoadState == .ready ? allConversations : [],
+            activeConversationID: activeConversationIDBinding,
             model: currentModel,
             onSend: { text in appEnvironment.coordinator.send(text) },
+            onNewChat: { startNewChat() },
+            onDeleteConversation: { id in deleteChat(id) },
+            currentUserName: appEnvironment.personaStore.userName.isEmpty ? "You" : appEnvironment.personaStore.userName,
+            currentUserEmail: "On-device",
             voiceState: mappedVoiceState,
             voiceTranscript: voiceEngine.transcript,
             onMicTapped: { Task { await toggleDictation() } },
@@ -57,41 +62,35 @@ struct ContentView: View {
             onSettings: { showSettings = true },
             isStreaming: session.isGenerating
         )
-        .task { await appEnvironment.loadModel() }
+        .task {
+            await appEnvironment.loadModel()
+            bootstrapChatHistory()
+        }
+        .onChange(of: session.isGenerating) { wasGenerating, isGenerating in
+            if wasGenerating && !isGenerating { persistActiveChat() }
+        }
+        .sheet(isPresented: $showMemoryBrowser) {
+            MemoryBrowserView(memoryStore: appEnvironment.memoryStore)
+        }
         .sheet(isPresented: $showSettings) {
             DFAIChatSettingsSheet(configuration: .init(
                 model: currentModel,
-                // Judgment call (Task 12, still true post-Task-13): DFAIChatSettingsSheet.
-                // Configuration grew several model-tuning / account / notification fields since
-                // this task's brief was written. System-prompt/temperature/max-tokens persistence
-                // isn't in Task 13's scope (only reload/clear/export are) — those three remain
-                // seeded with fixed values and no-op callbacks here.
+                // AICompleteChat is a fully local, on-device app with no user account and no
+                // subscription — DFAIChatSettingsSheet no longer carries Account/Notifications/
+                // Manage-Subscription fields, so there's nothing to fake here.
                 systemPrompt: "",
                 temperature: 0.8,
                 maxTokens: 2048,
-                conversationCount: 1,
                 memorySnapshot: currentMemorySnapshot,
-                accountConfig: DFAccountBlock.Configuration(
-                    avatarInitials: "NS",
-                    name: "NerdSnipe",
-                    email: "nerdsnipe@example.com",
-                    planName: "Local",
-                    planBadge: "ON-DEVICE",
-                    editTitle: "Edit Profile",
-                    manageTitle: "Manage Plan"
-                ),
-                notificationConfig: DFNotificationPreferencesBlock.Configuration(
-                    title: "Notifications",
-                    preferences: []
-                ),
                 voiceHotkeysContent: AnyView(VoiceHotkeysSettingsContent(voiceEngine: appEnvironment.voiceEngine)),
-                personaContent: AnyView(PersonaSettingsContent(personaStore: appEnvironment.personaStore)),
+                personaContent: AnyView(PersonaSettingsContent(
+                    personaStore: appEnvironment.personaStore,
+                    onUserNameSaved: { newName in appEnvironment.rememberUserName(newName) }
+                )),
                 onReloadModel: { Task { await appEnvironment.loadModel() } },
                 onSystemPromptChange: { _ in /* not in Task 13's scope — no system-prompt persistence exists yet */ },
                 onTemperatureChange: { _ in /* not in Task 13's scope — no temperature persistence exists yet */ },
                 onMaxTokensChange: { _ in /* not in Task 13's scope — no max-tokens persistence exists yet */ },
-                onClearHistory: { /* not in Task 13's scope — memory clear/export only, not chat history */ },
-                onExportHistory: { /* not in Task 13's scope — memory clear/export only, not chat history */ },
                 onClearMemory: { appEnvironment.memoryStore.deleteAll() },
                 onExportMemory: {
                     let export = GraphVisualizationExport.build(
@@ -106,19 +105,45 @@ struct ContentView: View {
                         try? data.write(to: url)
                     }
                 },
-                onManageSubscription: { /* No subscription model yet — not in scope */ },
+                onBrowseMemory: { showMemoryBrowser = true },
                 onDismiss: { showSettings = false }
             ))
         }
+        .alert("Dictation Unavailable", isPresented: Binding(
+            get: { voiceErrorMessage != nil },
+            set: { if !$0 { voiceErrorMessage = nil } }
+        )) {
+            Button("OK") { voiceErrorMessage = nil }
+        } message: {
+            Text(voiceErrorMessage ?? "")
+        }
     }
 
-    /// Bridges `ChatSession.entries` (AIChatUI's streaming display model) into
-    /// `AIChatConversation`/`AIChatMessage` (DesignFoundationPro's value types, what
-    /// `DFAIChatThreadScreen` actually renders). Reasoning/tool-call/activity/knowledge-retrieval
-    /// entries are dropped for v1 — this app doesn't use tool calling, and surfacing reasoning
-    /// traces in the UI isn't part of this plan's scope.
-    private var liveConversation: AIChatConversation {
-        let messages: [AIChatMessage] = session.entries.compactMap { entry in
+    /// Every persisted chat as `AIChatConversation` — the active one is built live from
+    /// `session.entries` (AIChatUI's streaming display model) so it updates in real time as the
+    /// model streams; every other chat is built from its last-saved `storedMessages` snapshot.
+    /// Reasoning/tool-call/activity/knowledge-retrieval entries are dropped for v1 — this app
+    /// doesn't use tool calling, and surfacing reasoning traces in the UI isn't part of scope.
+    private var allConversations: [AIChatConversation] {
+        chatRecords.map { chat in
+            if chat.id == activeChatID {
+                return AIChatConversation(
+                    id: chat.id,
+                    title: chat.title,
+                    messages: liveMessages,
+                    model: currentModel,
+                    updatedAt: chat.updatedAt
+                )
+            }
+            let messages = chat.storedMessages.map { msg in
+                AIChatMessage(role: msg.role == "user" ? .user : .assistant, content: msg.content)
+            }
+            return AIChatConversation(id: chat.id, title: chat.title, messages: messages, model: currentModel, updatedAt: chat.updatedAt)
+        }
+    }
+
+    private var liveMessages: [AIChatMessage] {
+        session.entries.compactMap { entry in
             switch entry {
             case .userMessage(let e):
                 AIChatMessage(role: .user, content: e.text)
@@ -128,13 +153,86 @@ struct ContentView: View {
                 nil
             }
         }
-        return AIChatConversation(
-            id: liveConversationID,
-            title: "Chat",
-            messages: messages,
-            model: currentModel,
-            updatedAt: Date()
-        )
+    }
+
+    private var activeConversationIDBinding: Binding<AIChatConversation.ID?> {
+        Binding(get: { activeChatID }, set: { selectChat($0) })
+    }
+
+    /// Loads every persisted chat at launch, creating a first chat if none exist yet, and selects
+    /// the most recently updated one — the fix for "the app always opens to a new chat window and
+    /// never shows previous chats" (there was previously zero persistence at all).
+    private func bootstrapChatHistory() {
+        var chats = appEnvironment.chatHistory.allChats()
+        if chats.isEmpty {
+            chats = [appEnvironment.chatHistory.createChat()]
+        }
+        chatRecords = chats
+        activeChatID = chats.first?.id
+        if let firstChat = chats.first {
+            loadChatIntoSession(firstChat)
+        }
+    }
+
+    private func startNewChat() {
+        persistActiveChat()
+        let chat = appEnvironment.chatHistory.createChat()
+        chatRecords.insert(chat, at: 0)
+        session.clearHistory()
+        activeChatID = chat.id
+    }
+
+    private func selectChat(_ id: UUID?) {
+        guard let id, id != activeChatID, let chat = chatRecords.first(where: { $0.id == id }) else { return }
+        persistActiveChat()
+        loadChatIntoSession(chat)
+        activeChatID = id
+    }
+
+    /// Deletes a chat from both the on-disk store and the in-memory sidebar list. Deleting the
+    /// currently active chat needs its own handling — the live session can't be left pointing at
+    /// a chat that no longer exists, so this selects whatever remains (creating a fresh chat if
+    /// the list is now empty), the same fallback `bootstrapChatHistory()` uses at launch.
+    private func deleteChat(_ id: UUID) {
+        appEnvironment.chatHistory.delete(id: id)
+        chatRecords.removeAll { $0.id == id }
+
+        guard id == activeChatID else { return }
+
+        if let next = chatRecords.first {
+            loadChatIntoSession(next)
+            activeChatID = next.id
+        } else {
+            let chat = appEnvironment.chatHistory.createChat()
+            chatRecords = [chat]
+            session.clearHistory()
+            activeChatID = chat.id
+        }
+    }
+
+    private func loadChatIntoSession(_ chat: ChatRecord) {
+        let entries: [ChatSession.Entry] = chat.storedMessages.map { msg in
+            msg.role == "user"
+                ? .userMessage(.init(id: UUID(), text: msg.content))
+                : .aiMessage(.init(id: UUID(), text: msg.content, isStreaming: false))
+        }
+        let history: [ChatMessage] = chat.storedMessages.map {
+            ChatMessage(role: $0.role == "user" ? .user : .assistant, content: [.text($0.content)])
+        }
+        session.loadSnapshot(entries: entries, history: history)
+    }
+
+    /// Saves the currently active chat's live messages to disk — called after each turn completes
+    /// and before switching away from a chat, so nothing typed is ever lost between launches.
+    private func persistActiveChat() {
+        guard let activeChatID else { return }
+        let stored = liveMessages.map { StoredMessage(role: $0.role == .user ? "user" : "assistant", content: $0.content) }
+        guard appEnvironment.chatHistory.save(id: activeChatID, messages: stored) else { return }
+        if let index = chatRecords.firstIndex(where: { $0.id == activeChatID }) {
+            chatRecords[index].updatedAt = Date()
+            let record = chatRecords.remove(at: index)
+            chatRecords.insert(record, at: 0)
+        }
     }
 
     private var currentModel: AIChatOnDeviceModel {
@@ -158,7 +256,14 @@ struct ContentView: View {
         if case .recording = voiceEngine.state {
             _ = await voiceEngine.stopDictation()
         } else {
-            try? await voiceEngine.startDictation()
+            do {
+                try await voiceEngine.startDictation()
+            } catch {
+                // `voiceEngine.state` already reflects the failure (`.error(...)`, mapped to
+                // `.idle` for the mic icon) — this alert is what actually tells the user WHY
+                // nothing happened, instead of a silent no-op.
+                voiceErrorMessage = error.localizedDescription
+            }
         }
     }
 

@@ -24,5 +24,7 @@
 	<string>15.0</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>AICompleteChat uses your microphone for voice dictation and voice commands.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>AICompleteChat uses on-device speech recognition to turn your voice into text.</string>
 </dict>
 </plist>

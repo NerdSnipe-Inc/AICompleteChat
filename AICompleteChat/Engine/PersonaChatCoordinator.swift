@@ -77,8 +77,9 @@ final class PersonaChatCoordinator {
         let episode = ChatEpisode(userText: userText, assistantText: assistantText, occurredAt: Date())
         let provider = memoryProvider
         let store = store
+        let knownUserName = personaStore.userName
         Task {
-            _ = await IngestionActor.shared.enqueue(episode, provider: provider, store: store)
+            _ = await IngestionActor.shared.enqueue(episode, provider: provider, store: store, knownUserName: knownUserName)
             onMemoryUpdated?()
         }
     }
