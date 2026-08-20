@@ -4,30 +4,40 @@ options:
   deploymentTarget:
     macOS: "15.0"
 packages:
-  DesignFoundation:
-    # Must match the path DesignFoundationPro's own Package.swift uses (../design-foundation,
-    # the canonical repo name) — SwiftPM derives package "identity" from the reference path text,
-    # not the resolved real directory, so pointing here at /Projects/DesignFoundation (capitalized,
-    # this machine's actual directory name) while DesignFoundationPro's manifest points at
-    # /Projects/design-foundation (lowercase-hyphenated, via a local symlink to the same directory)
-    # makes SwiftPM see two different package identities for the same product and fail to resolve.
-    path: /Users/nerdsnipe/Projects/design-foundation
+  # DesignFoundationPro is the one package that stays local-path — it's a private, licensed
+  # package (github.com/NerdSnipe-Inc/DesignFoundationPro), and that's the intentional gate: this
+  # repo is meant to be read and learned from by anyone, but only actually builds for someone who
+  # has DesignFoundationPro access. Every other dependency below is public, so pinning them to a
+  # real GitHub release lets SwiftPM resolve them automatically for anyone — no manual clone into
+  # a matching local directory layout required, unlike a path-based reference.
   DesignFoundationPro:
     path: /Users/nerdsnipe/Projects/DesignFoundationPro
+  DesignFoundation:
+    url: https://github.com/NerdSnipe-Inc/design-foundation.git
+    from: 1.3.3
   AIChatKit:
-    path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit
+    url: https://github.com/NerdSnipe-Inc/AIChatKit.git
+    from: 1.0.3
   AIChatKitMLX:
-    path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX
+    url: https://github.com/NerdSnipe-Inc/AIChatKitMLX.git
+    from: 1.1.2
   AiPersona:
-    path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona
+    url: https://github.com/NerdSnipe-Inc/AiPersona.git
+    from: 1.0.3
   AiVoiceKit:
-    path: /Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit
+    # Not `from:` — AiVoiceKit's own manifest pins FluidAudio/DynamicNotchKit to exact git
+    # revisions (their tagged releases were missing APIs this code needs), and SwiftPM refuses to
+    # resolve a "stable" semver requirement on a package whose own dependencies are revision-pinned
+    # ("unstable"). Branch tracking is the correct reference for a package with that shape.
+    url: https://github.com/NerdSnipe-Inc/AiVoiceKit.git
+    branch: master
 targets:
   AICompleteChat:
     type: application
     platform: macOS
     sources:
       - AICompleteChat
+      - Appicon.icon
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.nerdsnipe.aicompletechat
@@ -37,6 +47,9 @@ targets:
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: QW2MDLZZJH
         "CODE_SIGN_IDENTITY[sdk=macosx*]": "Apple Development"
+        ASSETCATALOG_COMPILER_APPICON_NAME: Appicon
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_ENTITLEMENTS: AICompleteChat/AICompleteChat.entitlements
     info:
       path: AICompleteChat/Info.plist
       properties:

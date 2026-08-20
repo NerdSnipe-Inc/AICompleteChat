@@ -18,6 +18,7 @@
 		8A6112C285D2B607E7D1094E /* DesignFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 9525AB06788853078320E4C9 /* DesignFoundation */; };
 		98E0EF0E04D7B5D1287481A8 /* AiVoiceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1EF714916DEA7B5E2AEE2BE5 /* AiVoiceKit */; };
 		992CD10DAFA1163413BD11C7 /* FakeChatProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6847657B41A4152647DDFF35 /* FakeChatProvider.swift */; };
+		A7272C02790B5EB2001280C8 /* Appicon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 205E0BFC40A6759EEDDC02ED /* Appicon.icon */; };
 		A8C14F6CC03F0096F9B40305 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2B0907CE141146F6067F91 /* AppEnvironment.swift */; };
 		AABF4692BA441FC0E47E141B /* VoiceHotkeysSettingsContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FAA7E699FC542D3EDD0FBC /* VoiceHotkeysSettingsContent.swift */; };
 		AF707E5B79CED78AA6CE20FA /* PersonaChatCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E040AAEEF662D832CC6E822 /* PersonaChatCoordinatorTests.swift */; };
@@ -40,10 +41,9 @@
 
 /* Begin PBXFileReference section */
 		051AB9C20ACCEFA842F1CA86 /* AICompleteChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AICompleteChatApp.swift; sourceTree = "<group>"; };
-		13DE964E91FD7CF36F319C56 /* AIChatKitMLX */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AIChatKitMLX; path = "../../xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX"; sourceTree = SOURCE_ROOT; };
 		1F4F1F62BF824236C6B9EFF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		205E0BFC40A6759EEDDC02ED /* Appicon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = Appicon.icon; sourceTree = "<group>"; };
 		28344A12C878DBAA5EFA6A64 /* MemorySnapshotProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySnapshotProvider.swift; sourceTree = "<group>"; };
-		3300CBEE530C165EE2CC6338 /* AiVoiceKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AiVoiceKit; path = "../../xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit"; sourceTree = SOURCE_ROOT; };
 		3E040AAEEF662D832CC6E822 /* PersonaChatCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaChatCoordinatorTests.swift; sourceTree = "<group>"; };
 		47C3835D8CE9C34D54280BDE /* AICompleteChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AICompleteChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		67A163B9EF3DB5A0458A41ED /* PersonaChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaChatCoordinator.swift; sourceTree = "<group>"; };
@@ -52,14 +52,12 @@
 		6A048DEB17D526A5B47F26BA /* ChatHistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHistoryStore.swift; sourceTree = "<group>"; };
 		8A56B859B9FF3D1557A2D131 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		97FAA7E699FC542D3EDD0FBC /* VoiceHotkeysSettingsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceHotkeysSettingsContent.swift; sourceTree = "<group>"; };
-		A5DC3EB41BCD9C131FCF0E11 /* AiPersona */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AiPersona; path = "../../xCodeProjects/NerdSnipe-Inc-Packages/AiPersona"; sourceTree = SOURCE_ROOT; };
 		A5F744B685F0372BFF1CFC1E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		AA5E96C47C184E8CBE47D6AB /* design-foundation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "design-foundation"; path = "../design-foundation"; sourceTree = SOURCE_ROOT; };
 		AB2B0907CE141146F6067F91 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		B1A637DEEB482B484813310D /* AICompleteChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AICompleteChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF146FD0126FA3AA7C2F86D9 /* MemoryBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBrowserView.swift; sourceTree = "<group>"; };
-		DED37567FC131867BEF1D274 /* AIChatKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AIChatKit; path = "../../xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit"; sourceTree = SOURCE_ROOT; };
 		E035A4433DD8024D2D5884B3 /* PersonaSettingsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaSettingsContent.swift; sourceTree = "<group>"; };
+		E479D7D37105F7F5A653CB01 /* AICompleteChat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AICompleteChat.entitlements; sourceTree = "<group>"; };
 		EF1AE935A9D0EB836050C565 /* MemorySnapshotProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySnapshotProviderTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -121,11 +119,6 @@
 		78B69F2C9498D71D27333450 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				DED37567FC131867BEF1D274 /* AIChatKit */,
-				13DE964E91FD7CF36F319C56 /* AIChatKitMLX */,
-				A5DC3EB41BCD9C131FCF0E11 /* AiPersona */,
-				3300CBEE530C165EE2CC6338 /* AiVoiceKit */,
-				AA5E96C47C184E8CBE47D6AB /* design-foundation */,
 				67BF38EC45B01296F185EE10 /* DesignFoundationPro */,
 			);
 			name = Packages;
@@ -134,6 +127,7 @@
 		9C8DB380B5A7BEDA087432C3 /* AICompleteChat */ = {
 			isa = PBXGroup;
 			children = (
+				E479D7D37105F7F5A653CB01 /* AICompleteChat.entitlements */,
 				051AB9C20ACCEFA842F1CA86 /* AICompleteChatApp.swift */,
 				A5F744B685F0372BFF1CFC1E /* ContentView.swift */,
 				8A56B859B9FF3D1557A2D131 /* Info.plist */,
@@ -158,6 +152,7 @@
 		DCF4AD1B47B8E8DE49B54830 = {
 			isa = PBXGroup;
 			children = (
+				205E0BFC40A6759EEDDC02ED /* Appicon.icon */,
 				9C8DB380B5A7BEDA087432C3 /* AICompleteChat */,
 				C0FDFC3AE3090EA4FC34ED0C /* AICompleteChatTests */,
 				78B69F2C9498D71D27333450 /* Packages */,
@@ -173,6 +168,7 @@
 			buildConfigurationList = D7BAE564047617048FE2481C /* Build configuration list for PBXNativeTarget "AICompleteChat" */;
 			buildPhases = (
 				8DE8C8683094B02F110CDC54 /* Sources */,
+				EC32BE4ECB810FA7FE0A3AB8 /* Resources */,
 				C122D09946E276F7F689EE68 /* Frameworks */,
 			);
 			buildRules = (
@@ -236,11 +232,11 @@
 			mainGroup = DCF4AD1B47B8E8DE49B54830;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				B1A8C10731B45B9AE09E2422 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit" */,
-				A7BE2CB8E5DE7A32BCCC86C2 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX" */,
-				F5FFC2E5952FE197CF4046E5 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona" */,
-				238027C3299C13D58306D63A /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit" */,
-				78A4C89AF5516DD268AEEACA /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/design-foundation" */,
+				E26EC7AFEF0730A0E54A7DE6 /* XCRemoteSwiftPackageReference "AIChatKit" */,
+				E87F313B4DA669C6046BB973 /* XCRemoteSwiftPackageReference "AIChatKitMLX" */,
+				C08491D5E77FAE9EB515FCE7 /* XCRemoteSwiftPackageReference "AiPersona" */,
+				4C548B79AE364AE2A77BF07B /* XCRemoteSwiftPackageReference "AiVoiceKit" */,
+				DF955E37843FFE1AA9D08A0E /* XCRemoteSwiftPackageReference "design-foundation" */,
 				7A3BC292C337560E6298D085 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundationPro" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -253,6 +249,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EC32BE4ECB810FA7FE0A3AB8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7272C02790B5EB2001280C8 /* Appicon.icon in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1C00F5DB110D2ED76778E876 /* Sources */ = {
@@ -331,12 +338,14 @@
 		3B4C16293FD1928EEF83AE37 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Appicon;
+				CODE_SIGN_ENTITLEMENTS = AICompleteChat/AICompleteChat.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QW2MDLZZJH;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = AICompleteChat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -352,12 +361,14 @@
 		44C11A5F22B81897B9A2F5AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Appicon;
+				CODE_SIGN_ENTITLEMENTS = AICompleteChat/AICompleteChat.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QW2MDLZZJH;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = AICompleteChat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -522,35 +533,59 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		238027C3299C13D58306D63A /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit";
-		};
-		78A4C89AF5516DD268AEEACA /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/design-foundation" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "/Users/nerdsnipe/Projects/design-foundation";
-		};
 		7A3BC292C337560E6298D085 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundationPro" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = /Users/nerdsnipe/Projects/DesignFoundationPro;
 		};
-		A7BE2CB8E5DE7A32BCCC86C2 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX";
-		};
-		B1A8C10731B45B9AE09E2422 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit";
-		};
-		F5FFC2E5952FE197CF4046E5 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona";
-		};
 /* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4C548B79AE364AE2A77BF07B /* XCRemoteSwiftPackageReference "AiVoiceKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NerdSnipe-Inc/AiVoiceKit.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		C08491D5E77FAE9EB515FCE7 /* XCRemoteSwiftPackageReference "AiPersona" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NerdSnipe-Inc/AiPersona.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.3;
+			};
+		};
+		DF955E37843FFE1AA9D08A0E /* XCRemoteSwiftPackageReference "design-foundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NerdSnipe-Inc/design-foundation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.3;
+			};
+		};
+		E26EC7AFEF0730A0E54A7DE6 /* XCRemoteSwiftPackageReference "AIChatKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NerdSnipe-Inc/AIChatKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.3;
+			};
+		};
+		E87F313B4DA669C6046BB973 /* XCRemoteSwiftPackageReference "AIChatKitMLX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NerdSnipe-Inc/AIChatKitMLX.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		1EF714916DEA7B5E2AEE2BE5 /* AiVoiceKit */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 4C548B79AE364AE2A77BF07B /* XCRemoteSwiftPackageReference "AiVoiceKit" */;
 			productName = AiVoiceKit;
 		};
 		778691EB625C74366F67E30F /* DesignFoundationPro */ = {
@@ -559,22 +594,27 @@
 		};
 		81ADEA171303DB61E8462E1E /* AiPersona */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = C08491D5E77FAE9EB515FCE7 /* XCRemoteSwiftPackageReference "AiPersona" */;
 			productName = AiPersona;
 		};
 		88A36470B1ADEDA7BCB845B3 /* AIChatMLX */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = E87F313B4DA669C6046BB973 /* XCRemoteSwiftPackageReference "AIChatKitMLX" */;
 			productName = AIChatMLX;
 		};
 		9525AB06788853078320E4C9 /* DesignFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = DF955E37843FFE1AA9D08A0E /* XCRemoteSwiftPackageReference "design-foundation" */;
 			productName = DesignFoundation;
 		};
 		E096A2F9B0E84169C0FE0EA3 /* AIChatUI */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = E26EC7AFEF0730A0E54A7DE6 /* XCRemoteSwiftPackageReference "AIChatKit" */;
 			productName = AIChatUI;
 		};
 		EA4CB46AC52C927BD51457B1 /* AIChatCore */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = E26EC7AFEF0730A0E54A7DE6 /* XCRemoteSwiftPackageReference "AIChatKit" */;
 			productName = AIChatCore;
 		};
 /* End XCSwiftPackageProductDependency section */

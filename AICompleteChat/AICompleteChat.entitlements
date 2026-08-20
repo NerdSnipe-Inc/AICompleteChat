@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Required under Hardened Runtime for MLX: it compiles Metal shader kernels at runtime,
+	     which needs executable memory pages the Hardened Runtime otherwise disallows by default. -->
+	<key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+	<true/>
+	<!-- MLX/its dependencies (Metal, Accelerate-backed libraries) load dynamic libraries that
+	     aren't all signed with this app's exact Team ID under every configuration. -->
+	<key>com.apple.security.cs.disable-library-validation</key>
+	<true/>
+</dict>
+</plist>

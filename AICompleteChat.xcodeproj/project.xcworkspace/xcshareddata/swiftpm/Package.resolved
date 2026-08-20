@@ -1,6 +1,42 @@
 {
-  "originHash" : "1fbecc7016b759de5dd33f49fb5aa5ff16d230d30831f935f5dcab0388ecd18a",
+  "originHash" : "7249f669976cd3d3a34c8ba7f9eec51e1e710f8abbd091f8c6efcd6c3f1a1100",
   "pins" : [
+    {
+      "identity" : "aichatkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NerdSnipe-Inc/AIChatKit.git",
+      "state" : {
+        "revision" : "6a81169cf8bee31160b6a6dd4713f27a4742b4ce",
+        "version" : "1.0.3"
+      }
+    },
+    {
+      "identity" : "aichatkitmlx",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NerdSnipe-Inc/AIChatKitMLX.git",
+      "state" : {
+        "revision" : "8b293fb8a539fe08a7060d96af2d7d3459fe0ac9",
+        "version" : "1.1.2"
+      }
+    },
+    {
+      "identity" : "aipersona",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NerdSnipe-Inc/AiPersona.git",
+      "state" : {
+        "revision" : "7d466c026c21947a73d6ab83c60b5eae6ab49eeb",
+        "version" : "1.0.3"
+      }
+    },
+    {
+      "identity" : "aivoicekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NerdSnipe-Inc/AiVoiceKit.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "794208f05d9b32da7bec97c09bbed40b785a0da4"
+      }
+    },
     {
       "identity" : "dynamicnotchkit",
       "kind" : "remoteSourceControl",
@@ -33,6 +69,15 @@
       "state" : {
         "revision" : "0bb916c67f4b9e5c682cbe02a42c701c93ab5021",
         "version" : "0.31.6"
+      }
+    },
+    {
+      "identity" : "mlx-swift-lm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ml-explore/mlx-swift-lm.git",
+      "state" : {
+        "revision" : "bd4b7434e6bdb588c7ef55706ff8904cb7fd4c57",
+        "version" : "3.31.4"
       }
     },
     {
@@ -157,8 +202,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax.git",
       "state" : {
-        "revision" : "0687f71944021d616d34d922343dcef086855920",
-        "version" : "600.0.1"
+        "revision" : "79e4b74a295b6eb74a8b585e3a39d29e70c1dbd1",
+        "version" : "603.0.2"
       }
     },
     {
