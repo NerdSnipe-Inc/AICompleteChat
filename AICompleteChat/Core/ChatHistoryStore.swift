@@ -65,10 +65,34 @@ final class ChatHistoryStore {
         }
     }
 
+    /// Namespaced under our own bundle identifier rather than the shared Application Support
+    /// root — this app has no App Sandbox entitlement, so `.applicationSupportDirectory` resolves
+    /// to the real, shared `~/Library/Application Support`, the same folder every other
+    /// unsandboxed app on the Mac uses; a bare filename there sits directly alongside everyone
+    /// else's data with no isolation.
     private static func onDiskStoreURL() -> URL {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        try? FileManager.default.createDirectory(at: appSupport, withIntermediateDirectories: true)
-        return appSupport.appendingPathComponent("AICompleteChatHistory.store")
+        let hostDirectory = appSupport.appendingPathComponent("com.nerdsnipe.aicompletechat", isDirectory: true)
+        try? FileManager.default.createDirectory(at: hostDirectory, withIntermediateDirectories: true)
+        let newURL = hostDirectory.appendingPathComponent("AICompleteChatHistory.store")
+        migrateFromUnnamespacedLocation(appSupport: appSupport, to: newURL)
+        return newURL
+    }
+
+    /// One-time migration for installs that already have data at the old, unnamespaced path
+    /// (`Application Support/AICompleteChatHistory.store`) — moves the SQLite file and its
+    /// `-shm`/`-wal` siblings so real existing chat history isn't silently orphaned by the
+    /// namespacing fix. No-ops once the new location exists or the old one doesn't.
+    private static func migrateFromUnnamespacedLocation(appSupport: URL, to newURL: URL) {
+        let oldURL = appSupport.appendingPathComponent("AICompleteChatHistory.store")
+        guard !FileManager.default.fileExists(atPath: newURL.path),
+              FileManager.default.fileExists(atPath: oldURL.path)
+        else { return }
+        for suffix in ["", "-shm", "-wal"] {
+            let source = URL(fileURLWithPath: oldURL.path + suffix)
+            let destination = URL(fileURLWithPath: newURL.path + suffix)
+            try? FileManager.default.moveItem(at: source, to: destination)
+        }
     }
 
     /// All persisted chats, most recently updated first.

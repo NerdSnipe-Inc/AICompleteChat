@@ -54,9 +54,9 @@
 		97FAA7E699FC542D3EDD0FBC /* VoiceHotkeysSettingsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceHotkeysSettingsContent.swift; sourceTree = "<group>"; };
 		A5DC3EB41BCD9C131FCF0E11 /* AiPersona */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AiPersona; path = "../../xCodeProjects/NerdSnipe-Inc-Packages/AiPersona"; sourceTree = SOURCE_ROOT; };
 		A5F744B685F0372BFF1CFC1E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AA5E96C47C184E8CBE47D6AB /* design-foundation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "design-foundation"; path = "../design-foundation"; sourceTree = SOURCE_ROOT; };
 		AB2B0907CE141146F6067F91 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		B1A637DEEB482B484813310D /* AICompleteChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AICompleteChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B3F9D5BEC44B7F804CE17746 /* DesignFoundation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignFoundation; path = ../DesignFoundation; sourceTree = SOURCE_ROOT; };
 		BF146FD0126FA3AA7C2F86D9 /* MemoryBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBrowserView.swift; sourceTree = "<group>"; };
 		DED37567FC131867BEF1D274 /* AIChatKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AIChatKit; path = "../../xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit"; sourceTree = SOURCE_ROOT; };
 		E035A4433DD8024D2D5884B3 /* PersonaSettingsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaSettingsContent.swift; sourceTree = "<group>"; };
@@ -125,7 +125,7 @@
 				13DE964E91FD7CF36F319C56 /* AIChatKitMLX */,
 				A5DC3EB41BCD9C131FCF0E11 /* AiPersona */,
 				3300CBEE530C165EE2CC6338 /* AiVoiceKit */,
-				B3F9D5BEC44B7F804CE17746 /* DesignFoundation */,
+				AA5E96C47C184E8CBE47D6AB /* design-foundation */,
 				67BF38EC45B01296F185EE10 /* DesignFoundationPro */,
 			);
 			name = Packages;
@@ -240,7 +240,7 @@
 				A7BE2CB8E5DE7A32BCCC86C2 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKitMLX" */,
 				F5FFC2E5952FE197CF4046E5 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona" */,
 				238027C3299C13D58306D63A /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit" */,
-				C63AB346E8F8C76E9E04FB06 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundation" */,
+				78A4C89AF5516DD268AEEACA /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/design-foundation" */,
 				7A3BC292C337560E6298D085 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundationPro" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -526,6 +526,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiVoiceKit";
 		};
+		78A4C89AF5516DD268AEEACA /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/design-foundation" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "/Users/nerdsnipe/Projects/design-foundation";
+		};
 		7A3BC292C337560E6298D085 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundationPro" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = /Users/nerdsnipe/Projects/DesignFoundationPro;
@@ -537,10 +541,6 @@
 		B1A8C10731B45B9AE09E2422 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AIChatKit";
-		};
-		C63AB346E8F8C76E9E04FB06 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundation" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = /Users/nerdsnipe/Projects/DesignFoundation;
 		};
 		F5FFC2E5952FE197CF4046E5 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/xCodeProjects/NerdSnipe-Inc-Packages/AiPersona" */ = {
 			isa = XCLocalSwiftPackageReference;

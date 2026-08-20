@@ -5,7 +5,13 @@ options:
     macOS: "15.0"
 packages:
   DesignFoundation:
-    path: /Users/nerdsnipe/Projects/DesignFoundation
+    # Must match the path DesignFoundationPro's own Package.swift uses (../design-foundation,
+    # the canonical repo name) — SwiftPM derives package "identity" from the reference path text,
+    # not the resolved real directory, so pointing here at /Projects/DesignFoundation (capitalized,
+    # this machine's actual directory name) while DesignFoundationPro's manifest points at
+    # /Projects/design-foundation (lowercase-hyphenated, via a local symlink to the same directory)
+    # makes SwiftPM see two different package identities for the same product and fail to resolve.
+    path: /Users/nerdsnipe/Projects/design-foundation
   DesignFoundationPro:
     path: /Users/nerdsnipe/Projects/DesignFoundationPro
   AIChatKit:
