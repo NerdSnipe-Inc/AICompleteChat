@@ -15,7 +15,7 @@ run it directly.
 - **Persistent chat history** — conversations survive across launches, with delete support.
 - **Voice dictation and commands** via [AiVoiceKit](https://github.com/NerdSnipe-Inc/AiVoiceKit) —
   on-device speech recognition, global hotkeys, AI-assisted rewriting of selected text in any app.
-- **Persistent memory** via AiPersona — a bi-temporal knowledge graph that extracts facts and
+- **Persistent memory** via [AiPersona](https://github.com/NerdSnipe-Inc/AiPersona) — a bi-temporal knowledge graph that extracts facts and
   entities from conversations, retrieves relevant ones per turn, and lets you browse, correct, or
   delete anything it's learned (Settings → Memory → Browse memory). It also remembers who you are:
   set your name once and it becomes a real fact in the graph, not just a settings field.
