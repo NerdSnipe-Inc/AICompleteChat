@@ -1,0 +1,74 @@
+# AICompleteChat
+
+A full-source, production-quality example of a fully on-device AI chat app for macOS. No cloud
+dependency once the model is downloaded — chat, voice dictation, and memory all run locally.
+
+**Just want to try it?** Skip building from source — grab the signed, notarized build from the
+[v1.0.0 release](https://github.com/NerdSnipe-Inc/AICompleteChat/releases/tag/v1.0.0), unzip, and
+run it directly.
+
+## What it does
+
+- **On-device inference** via MLX (`mlx-community/gemma-4-e4b-it-4bit`), downloaded from Hugging
+  Face the first time you launch it and cached locally after that — every launch after the first
+  is fully offline.
+- **Persistent chat history** — conversations survive across launches, with delete support.
+- **Voice dictation and commands** via [AiVoiceKit](https://github.com/NerdSnipe-Inc/AiVoiceKit) —
+  on-device speech recognition, global hotkeys, AI-assisted rewriting of selected text in any app.
+- **Persistent memory** via AiPersona — a bi-temporal knowledge graph that extracts facts and
+  entities from conversations, retrieves relevant ones per turn, and lets you browse, correct, or
+  delete anything it's learned (Settings → Memory → Browse memory). It also remembers who you are:
+  set your name once and it becomes a real fact in the graph, not just a settings field.
+- **A UI assembled from a real design system**, not built from scratch — see below.
+
+## Requirements
+
+- macOS 15+, Apple Silicon (MLX doesn't run meaningfully on Intel)
+- Xcode 26+
+- [xcodegen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`) — this repo has no
+  committed `.xcodeproj`; regenerate it from `project.yml`
+- **A [DesignFoundationPro](https://github.com/NerdSnipe-Inc/DesignFoundationPro) license.** This
+  is the one intentional gate: the source here is meant to be read and learned from by anyone, but
+  it only actually *builds* for someone with access to DesignFoundationPro, since the entire UI is
+  assembled from its `AIChat` vertical rather than built from scratch.
+
+Every other dependency is public and resolves automatically via Swift Package Manager:
+[DesignFoundation](https://github.com/NerdSnipe-Inc/design-foundation) (the free design-system
+core), [AIChatKit](https://github.com/NerdSnipe-Inc/AIChatKit) /
+[AIChatKitMLX](https://github.com/NerdSnipe-Inc/AIChatKitMLX) (chat session + MLX provider),
+[AiPersona](https://github.com/NerdSnipe-Inc/AiPersona) (memory graph), and
+[AiVoiceKit](https://github.com/NerdSnipe-Inc/AiVoiceKit) (voice).
+
+## Building
+
+```sh
+git clone https://github.com/NerdSnipe-Inc/AICompleteChat.git
+cd AICompleteChat
+xcodegen generate
+open AICompleteChat.xcodeproj
+```
+
+Build and run the `AICompleteChat` scheme. First launch downloads the model from Hugging Face
+(several GB) — you'll see real download progress, not just a spinner.
+
+## Architecture
+
+```
+AICompleteChat/
+  ContentView.swift          — bridges AIChatKit's ChatSession to DesignFoundationPro's AIChat UI
+  Engine/
+    AppEnvironment.swift     — owns the MLX provider, chat session, memory store, voice engine
+    PersonaChatCoordinator.swift — folds persona identity + retrieved memory into every prompt
+  Core/
+    ChatHistoryStore.swift   — SwiftData-backed chat persistence
+  Settings/                  — voice model picker, persona editor, memory browser
+```
+
+The UI itself lives in DesignFoundationPro's `AIChat` vertical (`DFAIChatRootView` and friends) —
+this app wires real data into it rather than reimplementing chat UI from scratch. See
+DesignFoundationPro's own docs for how that vertical is put together.
+
+## License
+
+MIT — see [LICENSE](LICENSE). Note this only covers the code in *this* repo; DesignFoundationPro,
+AiPersona, and AiVoiceKit are each licensed separately (see their own repos).
