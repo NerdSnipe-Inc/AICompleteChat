@@ -4,8 +4,9 @@ A full-source, production-quality example of a fully on-device AI chat app for m
 dependency once the model is downloaded — chat, voice dictation, and memory all run locally.
 
 **Just want to try it?** Skip building from source — grab the signed, notarized build from the
-[v1.0.0 release](https://github.com/NerdSnipe-Inc/AICompleteChat/releases/tag/v1.0.0), unzip, and
-run it directly.
+[latest release](https://github.com/NerdSnipe-Inc/AICompleteChat/releases/latest), unzip, and run
+it directly. No DesignFoundationPro license needed for this — that's only required to build from
+source (see below).
 
 ## What it does
 
@@ -31,6 +32,20 @@ run it directly.
   is the one intentional gate: the source here is meant to be read and learned from by anyone, but
   it only actually *builds* for someone with access to DesignFoundationPro, since the entire UI is
   assembled from its `AIChat` vertical rather than built from scratch.
+
+  Without access, package resolution fails outright — you'll see something like this during
+  `xcodegen generate` + build, or from Xcode's own package resolution:
+  ```
+  error: Failed to clone repository https://github.com/NerdSnipe-Inc/DesignFoundationPro.git:
+      remote: Repository not found.
+      fatal: repository 'https://github.com/NerdSnipe-Inc/DesignFoundationPro.git/' not found
+  ```
+  (If you have no GitHub credentials configured in git at all, the underlying git error reads
+  `could not read Username for 'https://github.com': terminal prompts disabled` instead — same
+  cause, just failing one step earlier.) That's expected, not a bug in this repo: it means your
+  GitHub account isn't on DesignFoundationPro's access list. [Grab a
+  license](https://github.com/NerdSnipe-Inc/DesignFoundationPro) to fix it, or just [download the
+  signed build](https://github.com/NerdSnipe-Inc/AICompleteChat/releases/latest) above instead.
 
 Every other dependency is public and resolves automatically via Swift Package Manager:
 [DesignFoundation](https://github.com/NerdSnipe-Inc/design-foundation) (the free design-system
