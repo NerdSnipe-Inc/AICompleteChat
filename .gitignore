@@ -10,3 +10,4 @@ xcuserdata/
 .superpowers/
 *.app/
 *.dmg
+.claude/settings.local.json
