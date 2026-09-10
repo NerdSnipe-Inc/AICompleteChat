@@ -47,7 +47,6 @@
 		3E040AAEEF662D832CC6E822 /* PersonaChatCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaChatCoordinatorTests.swift; sourceTree = "<group>"; };
 		47C3835D8CE9C34D54280BDE /* AICompleteChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AICompleteChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		67A163B9EF3DB5A0458A41ED /* PersonaChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaChatCoordinator.swift; sourceTree = "<group>"; };
-		67BF38EC45B01296F185EE10 /* DesignFoundationPro */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DesignFoundationPro; path = ../DesignFoundationPro; sourceTree = SOURCE_ROOT; };
 		6847657B41A4152647DDFF35 /* FakeChatProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeChatProvider.swift; sourceTree = "<group>"; };
 		6A048DEB17D526A5B47F26BA /* ChatHistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHistoryStore.swift; sourceTree = "<group>"; };
 		8A56B859B9FF3D1557A2D131 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -116,14 +115,6 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
-		78B69F2C9498D71D27333450 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				67BF38EC45B01296F185EE10 /* DesignFoundationPro */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		9C8DB380B5A7BEDA087432C3 /* AICompleteChat */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,7 +146,6 @@
 				205E0BFC40A6759EEDDC02ED /* Appicon.icon */,
 				9C8DB380B5A7BEDA087432C3 /* AICompleteChat */,
 				C0FDFC3AE3090EA4FC34ED0C /* AICompleteChatTests */,
-				78B69F2C9498D71D27333450 /* Packages */,
 				1028251411FDA5834DF9E4AF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -237,7 +227,7 @@
 				C08491D5E77FAE9EB515FCE7 /* XCRemoteSwiftPackageReference "AiPersona" */,
 				4C548B79AE364AE2A77BF07B /* XCRemoteSwiftPackageReference "AiVoiceKit" */,
 				DF955E37843FFE1AA9D08A0E /* XCRemoteSwiftPackageReference "design-foundation" */,
-				7A3BC292C337560E6298D085 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundationPro" */,
+				B56FE8C4380ACC7BFDA0B917 /* XCRemoteSwiftPackageReference "DesignFoundationPro" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1028251411FDA5834DF9E4AF /* Products */;
@@ -532,13 +522,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		7A3BC292C337560E6298D085 /* XCLocalSwiftPackageReference "/Users/nerdsnipe/Projects/DesignFoundationPro" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = /Users/nerdsnipe/Projects/DesignFoundationPro;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		4C548B79AE364AE2A77BF07B /* XCRemoteSwiftPackageReference "AiVoiceKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -546,6 +529,14 @@
 			requirement = {
 				branch = master;
 				kind = branch;
+			};
+		};
+		B56FE8C4380ACC7BFDA0B917 /* XCRemoteSwiftPackageReference "DesignFoundationPro" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/NerdSnipe-Inc/DesignFoundationPro.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.1;
 			};
 		};
 		C08491D5E77FAE9EB515FCE7 /* XCRemoteSwiftPackageReference "AiPersona" */ = {
@@ -590,6 +581,7 @@
 		};
 		778691EB625C74366F67E30F /* DesignFoundationPro */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = B56FE8C4380ACC7BFDA0B917 /* XCRemoteSwiftPackageReference "DesignFoundationPro" */;
 			productName = DesignFoundationPro;
 		};
 		81ADEA171303DB61E8462E1E /* AiPersona */ = {
