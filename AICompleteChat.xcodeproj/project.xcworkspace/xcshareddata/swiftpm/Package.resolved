@@ -1,5 +1,5 @@
 {
-  "originHash" : "7249f669976cd3d3a34c8ba7f9eec51e1e710f8abbd091f8c6efcd6c3f1a1100",
+  "originHash" : "f43833f7c58dd8589fbda642f3752a918dc6927ec7eeba277e27512ea87897cd",
   "pins" : [
     {
       "identity" : "aichatkit",
@@ -35,6 +35,24 @@
       "state" : {
         "branch" : "master",
         "revision" : "794208f05d9b32da7bec97c09bbed40b785a0da4"
+      }
+    },
+    {
+      "identity" : "design-foundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NerdSnipe-Inc/design-foundation.git",
+      "state" : {
+        "revision" : "99efc54066d4e283057d309818c0a966f443930f",
+        "version" : "1.5.0"
+      }
+    },
+    {
+      "identity" : "designfoundationpro",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/NerdSnipe-Inc/DesignFoundationPro.git",
+      "state" : {
+        "revision" : "ec127efee3a8cce211ff01ae6f92878477fb1c39",
+        "version" : "2.1.1"
       }
     },
     {
