@@ -70,9 +70,10 @@ xcodebuild archive \
   -configuration Release \
   -destination "generic/platform=macOS" \
   -archivePath "$WORK_DIR/$APP_NAME.xcarchive" \
+  -skipMacroValidation \
+  -skipPackagePluginValidation \
   CODE_SIGN_STYLE=Manual \
   CODE_SIGN_IDENTITY="Developer ID Application" \
-  "CODE_SIGN_IDENTITY[sdk=macosx*]=Developer ID Application" \
   DEVELOPMENT_TEAM="$TEAM_ID" \
   MARKETING_VERSION="$VERSION"
 
