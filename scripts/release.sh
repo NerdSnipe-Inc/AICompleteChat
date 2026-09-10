@@ -4,19 +4,19 @@
 # steps. Runs entirely on this machine: your Developer ID key and notarization credentials never
 # leave your login keychain.
 #
-# One-time setup, done once ever on this Mac:
-#   1. Have a "Developer ID Application: <Name> (QW2MDLZZJH)" identity in your login keychain.
-#   2. xcrun notarytool store-credentials "AC_NOTARY_PROFILE" \
-#        --apple-id you@example.com --team-id QW2MDLZZJH
-#      (or the --issuer/--key-id/--key API-key form) — stores encrypted creds in Keychain,
-#      referenced below by profile name only.
+# One-time setup: have a "Developer ID Application: <Name> (QW2MDLZZJH)" identity in your login
+# keychain. Notarization uses the App Store Connect API key already at
+# ~/.appstoreconnect/private_keys/AuthKey_XBLUUZUD2M.p8 (the same one Xcode's own Accounts/
+# Organizer flow uses) — nothing to set up separately, no notarytool store-credentials needed.
 #
 # Usage: scripts/release.sh 1.2.0   (tags v1.2.0, builds HEAD, publishes the release)
 set -euo pipefail
 
 APP_NAME="AICompleteChat"
 TEAM_ID="QW2MDLZZJH"
-NOTARY_PROFILE="AC_NOTARY_PROFILE"
+NOTARY_KEY_ID="XBLUUZUD2M"
+NOTARY_ISSUER_ID="d8c7c3d3-f620-40e6-99a4-500721b826c5"
+NOTARY_KEY_PATH="$HOME/.appstoreconnect/private_keys/AuthKey_${NOTARY_KEY_ID}.p8"
 
 usage() {
   echo "Usage: $0 <version>   e.g. $0 1.2.0" >&2
@@ -36,6 +36,10 @@ command -v xcodegen >/dev/null || { echo "xcodegen not installed (brew install x
 command -v gh >/dev/null || { echo "gh CLI not installed (brew install gh)" >&2; exit 1; }
 security find-identity -p codesigning -v | grep -q "Developer ID Application" || {
   echo "No 'Developer ID Application' identity in your login keychain" >&2
+  exit 1
+}
+[[ -f "$NOTARY_KEY_PATH" ]] || {
+  echo "Notarization key not found at $NOTARY_KEY_PATH" >&2
   exit 1
 }
 if ! git diff --quiet || ! git diff --cached --quiet; then
@@ -110,7 +114,7 @@ echo "==> Submitting for notarization (can take a few minutes)"
 # from the stapled .app below).
 ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "$WORK_DIR/notarize-submission.zip"
 xcrun notarytool submit "$WORK_DIR/notarize-submission.zip" \
-  --keychain-profile "$NOTARY_PROFILE" \
+  --key "$NOTARY_KEY_PATH" --key-id "$NOTARY_KEY_ID" --issuer "$NOTARY_ISSUER_ID" \
   --wait --timeout 30m
 
 echo "==> Stapling notarization ticket"
