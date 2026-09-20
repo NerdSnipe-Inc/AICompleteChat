@@ -65,6 +65,23 @@ struct LiveGemma4Tests {
         #expect(result.reasoning.isEmpty, "thinking is off by default, no reasoning expected")
     }
 
+    /// Regression: with `repetitionPenalty` set, mlx-swift-lm < 3.31.4 corrupted the penalty's token
+    /// ring on Gemma 4's `[1, N]` prompt array and crashed on the first sampled token
+    /// (`[broadcast_shapes] Shapes (20) and (N+19)`). The prompt must be far longer than the
+    /// penalty's 20-token window so a mis-sized buffer can't line up with it by accident.
+    @Test("repetition penalty with a long prompt does not crash and still answers", .timeLimit(.minutes(5)))
+    func repetitionPenaltyLongPrompt() async throws {
+        let provider = MLXProvider(modelId: LiveModel.id, maxTokens: 64, temperature: 0.2, repetitionPenalty: 1.1)
+        let filler = String(repeating: "The quick brown fox jumps over the lazy dog near the riverbank. ", count: 40)
+        let result = try await LiveModel.collect(
+            provider,
+            [ChatMessage(role: .user, content: filler + "\nIgnore the text above. Reply with exactly one word: hello")]
+        )
+        print("[live/repetition] events=\(result.events.count) text=\(result.text.debugDescription)")
+        #expect(!result.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        #expect(result.finishedNormally)
+    }
+
     @Test("multi-turn chat keeps context", .timeLimit(.minutes(5)))
     func multiTurn() async throws {
         let provider = MLXProvider(modelId: LiveModel.id, maxTokens: 128, temperature: 0.1)
