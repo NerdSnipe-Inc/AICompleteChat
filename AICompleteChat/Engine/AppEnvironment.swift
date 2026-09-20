@@ -156,7 +156,14 @@ final class AppEnvironment {
             }
             modelLoadState = .ready
         } catch {
-            modelLoadState = .error(error.localizedDescription)
+            // Surface the specific message plus what the user can do about it. Set
+            // AICHAT_DEBUG=1 (or `ChatLog.debugMode = true`) for the full error chain in the log.
+            let message = error.localizedDescription
+            if let hint = (error as? LocalizedError)?.recoverySuggestion {
+                modelLoadState = .error("\(message) \(hint)")
+            } else {
+                modelLoadState = .error(message)
+            }
         }
     }
 }
