@@ -12,3 +12,4 @@ xcuserdata/
 *.app/
 *.dmg
 .claude/settings.local.json
+project.local.yml
