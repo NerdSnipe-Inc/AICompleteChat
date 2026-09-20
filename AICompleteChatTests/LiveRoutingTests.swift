@@ -31,6 +31,11 @@ enum LiveRouting {
 
     static func log(_ s: String) { print("[live/routing] \(s)") }
 
+    /// The accuracy benchmarks and root-cause probes take tens of minutes and (for the stock router)
+    /// deliberately assert targets it does not meet — see AIChatKitMLX `docs/TOOL_ROUTING.md`. They
+    /// are opt-in: `ROUTING_BENCHMARK=1`. The behavioural tests below always run.
+    static let benchmarksEnabled = ProcessInfo.processInfo.environment["ROUTING_BENCHMARK"] != nil
+
     // MARK: Tools
 
     static func tool(_ name: String, _ desc: String, _ props: [(String, String, String, [String]?)], required: [String]) -> [String: any Sendable] {
@@ -321,7 +326,7 @@ struct LiveRoutingTests {
         LiveRouting.log("router raw: calls=\(rt.calls) text=\(rt.text.debugDescription) error=\(String(describing: rt.error))")
     }
 
-    @Test("where do the ~5 s of prompt preparation go? (template render vs tokenization)", .timeLimit(.minutes(5)))
+    @Test("where do the ~5 s of prompt preparation go? (template render vs tokenization)", .timeLimit(.minutes(5)), .enabled(if: LiveRouting.benchmarksEnabled, "router benchmark — set ROUTING_BENCHMARK=1"))
     func prepareTiming() async throws {
         let snapshots = FileManager.default.homeDirectoryForCurrentUser
             .appendingPathComponent(".cache/huggingface/hub/models--mlx-community--functiongemma-270m-it-bf16/snapshots")
@@ -351,7 +356,7 @@ struct LiveRoutingTests {
         }
     }
 
-    @Test("rendered FunctionGemma prompt (what the router actually sees)", .timeLimit(.minutes(5)))
+    @Test("rendered FunctionGemma prompt (what the router actually sees)", .timeLimit(.minutes(5)), .enabled(if: LiveRouting.benchmarksEnabled, "router benchmark — set ROUTING_BENCHMARK=1"))
     func renderedPrompt() async throws {
         let snapshots = FileManager.default.homeDirectoryForCurrentUser
             .appendingPathComponent(".cache/huggingface/hub/models--mlx-community--functiongemma-270m-it-4bit/snapshots")
@@ -365,7 +370,7 @@ struct LiveRoutingTests {
         LiveRouting.log("rendered prompt (\(ids.count) tokens, first ids \(ids.prefix(6))):\n\(tokenizer.decode(tokens: ids, skipSpecialTokens: false))")
     }
 
-    @Test("FunctionGemma raw output: template-rendered vs inline declarations, per router model (root-cause probe)", .timeLimit(.minutes(15)))
+    @Test("FunctionGemma raw output: template-rendered vs inline declarations, per router model (root-cause probe)", .timeLimit(.minutes(15)), .enabled(if: LiveRouting.benchmarksEnabled, "router benchmark — set ROUTING_BENCHMARK=1"))
     func rawProbe() async throws {
         let bf16 = "mlx-community/functiongemma-270m-it-bf16"
         var routers: [(String, MLXProvider)] = [("stock4bit", LiveRouting.routerProvider())]
@@ -388,7 +393,7 @@ struct LiveRoutingTests {
         }
     }
 
-    @Test("clear tool requests: routing accuracy vs native gemma-4 tool calling", .timeLimit(.minutes(30)))
+    @Test("clear tool requests: routing accuracy vs native gemma-4 tool calling", .timeLimit(.minutes(30)), .enabled(if: LiveRouting.benchmarksEnabled, "router benchmark — set ROUTING_BENCHMARK=1"))
     func clearRequests() async throws {
         let rows = try await RoutingEvaluation.shared.rows("clear", LiveRouting.clear)
         let r = RoutingEvaluation.stats(rows) { $0.router }, n = RoutingEvaluation.stats(rows) { $0.native }
@@ -406,7 +411,7 @@ struct LiveRoutingTests {
         #expect(Double(r.ok) / Double(rows.count) >= 0.9, "router-path hit rate \(r.ok)/\(rows.count) is below 90%; misses are listed above")
     }
 
-    @Test("chit-chat must not trigger tools (false-positive rate)", .timeLimit(.minutes(30)))
+    @Test("chit-chat must not trigger tools (false-positive rate)", .timeLimit(.minutes(30)), .enabled(if: LiveRouting.benchmarksEnabled, "router benchmark — set ROUTING_BENCHMARK=1"))
     func chitChat() async throws {
         let rows = try await RoutingEvaluation.shared.rows("chat", LiveRouting.chat)
         let r = RoutingEvaluation.stats(rows) { $0.router }, n = RoutingEvaluation.stats(rows) { $0.native }
@@ -424,7 +429,7 @@ struct LiveRoutingTests {
         #expect(Double(rfp) / Double(rows.count) <= 0.1, "chit-chat false-positive rate \(rfp)/\(rows.count) exceeds 10%")
     }
 
-    @Test("multi-argument extraction, non-English/emoji, ambiguous, adversarial", .timeLimit(.minutes(30)))
+    @Test("multi-argument extraction, non-English/emoji, ambiguous, adversarial", .timeLimit(.minutes(30)), .enabled(if: LiveRouting.benchmarksEnabled, "router benchmark — set ROUTING_BENCHMARK=1"))
     func harderSets() async throws {
         for (name, set) in [("multiArg", LiveRouting.multiArg), ("international", LiveRouting.international),
                             ("ambiguous", LiveRouting.ambiguous), ("adversarial", LiveRouting.adversarial)] {
@@ -448,7 +453,7 @@ struct LiveRoutingTests {
         }
     }
 
-    @Test("router variants on the clear + chit-chat sets (router stage only): 4-bit vs bf16, inline vs chat-template prompt, fine-tuned", .timeLimit(.minutes(40)))
+    @Test("router variants on the clear + chit-chat sets (router stage only): 4-bit vs bf16, inline vs chat-template prompt, fine-tuned", .timeLimit(.minutes(40)), .enabled(if: LiveRouting.benchmarksEnabled, "router benchmark — set ROUTING_BENCHMARK=1"))
     func routerVariants() async throws {
         typealias V = (label: String, id: String?, path: URL?, format: ToolRoutingProvider.RouterToolFormat)
         let bf16 = LiveRouting.routerId, q4 = "mlx-community/functiongemma-270m-it-4bit"
