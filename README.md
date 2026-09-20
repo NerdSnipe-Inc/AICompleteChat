@@ -83,6 +83,15 @@ The UI itself lives in DesignFoundationPro's `AIChat` vertical (`DFAIChatRootVie
 this app wires real data into it rather than reimplementing chat UI from scratch. See
 DesignFoundationPro's own docs for how that vertical is put together.
 
+## Known limits
+
+- **First launch needs the model.** The app uses `mlx-community/gemma-4-e4b-it-4bit` (about 5 GB; the local snapshot is 4.8 GB), downloaded through the Hugging Face cache on first launch. The live tests are skipped, not failed, when it isn't cached. See [docs/TESTING.md](docs/TESTING.md).
+- **FunctionGemma tool routing is experimental and off by default.** Enable it with `defaults write com.nerdsnipe.aicompletechat AICOMPLETECHAT_TOOL_ROUTING -bool YES`. Read [AIChatKitMLX's TOOL_ROUTING.md](https://github.com/NerdSnipe-Inc/AIChatKitMLX/blob/main/docs/TOOL_ROUTING.md) first for the measured accuracy and latency.
+- **Router benchmarks are opt-in.** The router accuracy/latency live tests only run with `ROUTING_BENCHMARK=1`; the other routing tests run whenever both models are cached.
+- **A message cancelled before any reply is not sent to the model on later turns.** It stays in the transcript marked `UserEntry.isCancelled` (AIChatKit 1.2.0+; `project.yml` currently declares `from: 1.1.0`). Resend it if you still want an answer.
+
+Building from source also requires DesignFoundationPro access, see [Requirements](#requirements).
+
 ## License
 
 MIT — see [LICENSE](LICENSE). Note this only covers the code in *this* repo; DesignFoundationPro,

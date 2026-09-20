@@ -23,6 +23,7 @@ cd ../AIChatKit    && xcodebuild test -scheme AIChatKit-Package -destination 'pl
 cd ../AIChatKitMLX && xcodebuild test -scheme AIChatKitMLX      -destination 'platform=macOS' -skipMacroValidation
 cd ../AiPersona    && xcodebuild test -scheme AiPersona         -destination 'platform=macOS' -skipMacroValidation
 ```
+Router accuracy/latency benchmarks in `LiveRoutingTests` only run with `ROUTING_BENCHMARK=1` set in the environment.
 `-skipMacroValidation` is required headless: it trusts the `MLXHuggingFaceMacros` macro.
 
 ## Live suites (AICompleteChatTests)
