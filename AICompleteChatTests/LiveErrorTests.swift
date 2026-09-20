@@ -15,6 +15,7 @@ struct LiveErrorTests {
             try await provider.loadModel()
             Issue.record("Expected loadModel to throw")
         } catch let error as ChatError {
+            print("[live/error] description=\(error.errorDescription ?? "nil")\n recovery=\(error.recoverySuggestion ?? "nil")\n debug=\(error.debugDescription)")
             switch error {
             case .modelNotFound(let id):
                 #expect(id.contains("does-not-exist-xyz"))
