@@ -11,7 +11,7 @@
 AICompleteChat is a new, standalone, production-quality macOS AI chat app. It exists to be two things at once:
 
 1. A genuinely good, privacy-first on-device chat app — voice-enabled, memory-enabled, zero API keys, zero network calls for inference.
-2. The flagship full-source example for both [`AiVoiceKit`](https://github.com/NerdSnipe-Inc/AiVoiceKit) (voice engine) and [`DesignFoundationPro`](https://github.com/NerdSnipe-Inc/DesignFoundationPro) (UI screens/shells) — a real app, not a demo shell, that both packages' users can read end-to-end.
+2. The flagship full-source example for both [`AiVoiceKit`](https://github.com/NerdSnipe-Inc/AiVoiceKit) (voice engine) and [`DesignFoundationPro`](https://nerdsnipe.cc/design-foundation-pro) (UI screens/shells) — a real app, not a demo shell, that both packages' users can read end-to-end.
 
 It is **not** a wrapper around DesignFoundationPro's existing AIChat vertical as-is. That vertical (`DFAIChatRootView`, `DFAIChatThreadScreen`, `DFAIChatCompareScreen`, etc.) was built around comparing multiple cloud models (static `Claude`/`GPT-4o`/`Gemini` catalog, complete non-streaming responses). AICompleteChat requires real changes to that vertical to fit a single streaming on-device model, voice input, and a memory panel — those changes are in scope and approved, including breaking changes to DesignFoundationPro's public API for that vertical (major-version bump, CHANGELOG entry).
 

@@ -28,7 +28,7 @@ source (see below).
 - Xcode 26+
 - [xcodegen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`) — this repo has no
   committed `.xcodeproj`; regenerate it from `project.yml`
-- **A [DesignFoundationPro](https://github.com/NerdSnipe-Inc/DesignFoundationPro) license.** This
+- **A [DesignFoundationPro](https://nerdsnipe.cc/design-foundation-pro) license.** This
   is the one intentional gate: the source here is meant to be read and learned from by anyone, but
   it only actually *builds* for someone with access to DesignFoundationPro, since the entire UI is
   assembled from its `AIChat` vertical rather than built from scratch.
@@ -44,7 +44,7 @@ source (see below).
   `could not read Username for 'https://github.com': terminal prompts disabled` instead — same
   cause, just failing one step earlier.) That's expected, not a bug in this repo: it means your
   GitHub account isn't on DesignFoundationPro's access list. [Grab a
-  license](https://github.com/NerdSnipe-Inc/DesignFoundationPro) to fix it, or just [download the
+  license](https://nerdsnipe.cc/design-foundation-pro) to fix it, or just [download the
   signed build](https://github.com/NerdSnipe-Inc/AICompleteChat/releases/latest) above instead.
 
 Every other dependency is public and resolves automatically via Swift Package Manager:
