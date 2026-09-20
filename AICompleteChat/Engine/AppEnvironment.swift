@@ -9,6 +9,7 @@ import DesignFoundationPro
 import AVFoundation
 import ApplicationServices
 import AppKit
+import os
 
 @MainActor
 @Observable
@@ -33,13 +34,21 @@ final class AppEnvironment {
     /// facts, since `MemoryGraphStore` itself has no Observable/Combine surface to watch directly.
     private(set) var memoryUpdateTick = 0
 
+    private static let logger = Logger(subsystem: "cc.nerdsnipe.AICompleteChat", category: "AppEnvironment")
+
     init() {
         let mlxProvider = MLXProvider() // defaults to MLXProvider.recommendedModelId() = gemma-4-e4b-it-4bit
         let session = ChatSession(provider: mlxProvider, model: MLXProvider.recommendedModelId())
         let memoryStore = MemoryGraphStore.shared
         let retrieval = RetrievalService(store: memoryStore)
         let personaStore = PersonaStore.shared
-        let memoryProvider = LocalMemoryProvider(mlxProvider: mlxProvider, modelId: MLXProvider.recommendedModelId())
+        // Extraction gets its OWN provider instance: deterministic (temperature 0) and length-capped,
+        // instead of sharing the chat provider's creative sampling (0.6) and unbounded generation.
+        // Same model id + residency slot, so it reuses the already-resident weights (no second load);
+        // requests queue behind chat on MLX's single ModelContainer, so a background extraction can
+        // delay — but never corrupt or deadlock — a chat turn.
+        let extractionProvider = MLXProvider(modelId: MLXProvider.recommendedModelId(), maxTokens: 768, temperature: 0)
+        let memoryProvider = LocalMemoryProvider(mlxProvider: extractionProvider, modelId: MLXProvider.recommendedModelId())
         let coordinator = PersonaChatCoordinator(
             session: session, store: memoryStore, retrieval: retrieval,
             memoryProvider: memoryProvider, personaStore: personaStore
@@ -62,19 +71,37 @@ final class AppEnvironment {
         voiceEngine.onCommandReceived = { [coordinator] text in
             coordinator.send(text)
         }
+        coordinator.readiness = { [weak self] in
+            guard let self else { return .notLoaded }
+            return switch self.modelLoadState {
+            case .ready: .ready
+            case .downloading(let progress): .loading(progress: progress)
+            case .error(let reason): .failed(reason)
+            case .notLoaded: .notLoaded
+            }
+        }
         voiceEngine.onEditRequested = { [mlxProvider] selectedText, instruction in
             let options = ChatRequestOptions(
                 systemPrompt: "Rewrite the given text according to the instruction. Respond with ONLY the rewritten text, no commentary."
             )
             let prompt = "Instruction: \(instruction)\n\nText:\n\(selectedText)"
-            guard let result = try? await mlxProvider.complete(
-                messages: [ChatMessage(role: .user, content: prompt)],
-                model: MLXProvider.recommendedModelId(),
-                options: options
-            ), case .text(let rewritten) = result.message.content.first else {
+            do {
+                let result = try await mlxProvider.complete(
+                    messages: [ChatMessage(role: .user, content: prompt)],
+                    model: MLXProvider.recommendedModelId(),
+                    options: options
+                )
+                guard case .text(let rewritten) = result.message.content.first, !rewritten.isEmpty else {
+                    Self.logger.error("voice edit: model returned no text; leaving selection unchanged")
+                    return selectedText
+                }
+                return rewritten
+            } catch {
+                // Returning the original text is the safe fallback for a text edit, but the failure
+                // must be visible — it used to be swallowed by `try?`.
+                Self.logger.error("voice edit failed: \(error.localizedDescription, privacy: .public)")
                 return selectedText
             }
-            return rewritten
         }
 
         // Assigned last, after every stored property above is set — Swift forbids capturing
@@ -144,6 +171,36 @@ final class AppEnvironment {
             factText: factText, embedding: LocalEmbedder.embed(factText)
         )
         memoryUpdateTick += 1
+    }
+
+    /// Human-readable, cause-specific text for a model load failure.
+    nonisolated static func describeLoadFailure(_ error: Error) -> String {
+        // AIChatCore's classified errors already carry a cause-specific description AND a next step.
+        if let chat = error as? ChatError, let description = chat.errorDescription {
+            return [description, chat.recoverySuggestion].compactMap { $0 }.joined(separator: " ")
+        }
+        if let urlError = error as? URLError {
+            switch urlError.code {
+            case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed:
+                return "no network connection — the model needs to be downloaded once (\(urlError.localizedDescription))"
+            case .timedOut:
+                return "the model download timed out — check your connection and retry"
+            case .cannotFindHost, .cannotConnectToHost, .dnsLookupFailed:
+                return "could not reach the model host (\(urlError.localizedDescription))"
+            default:
+                return "network error while fetching the model (\(urlError.localizedDescription))"
+            }
+        }
+        let ns = error as NSError
+        if ns.domain == NSCocoaErrorDomain, ns.code == NSFileWriteOutOfSpaceError {
+            return "not enough free disk space to store the model"
+        }
+        let described = (error as? LocalizedError)?.errorDescription ?? ns.localizedDescription
+        // Generic Cocoa fallback text carries no information; append the raw domain/code.
+        if described.hasPrefix("The operation couldn") {
+            return "\(described) [\(ns.domain) \(ns.code)]"
+        }
+        return described
     }
 
     func loadModel() async {

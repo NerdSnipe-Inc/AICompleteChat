@@ -34,6 +34,8 @@ struct ContentView: View {
     @State private var activeChatID: UUID?
     @State private var showMemoryBrowser = false
     @State private var voiceErrorMessage: String?
+    /// Non-voice failures the user must see (model unavailable when sending, export failed).
+    @State private var appErrorMessage: String?
 
     init(appEnvironment: AppEnvironment) {
         self.appEnvironment = appEnvironment
@@ -46,7 +48,11 @@ struct ContentView: View {
             conversations: appEnvironment.modelLoadState == .ready ? allConversations : [],
             activeConversationID: activeConversationIDBinding,
             model: currentModel,
-            onSend: { text in appEnvironment.coordinator.send(text) },
+            onSend: { text in
+                if case .modelUnavailable(let message) = appEnvironment.coordinator.send(text) {
+                    appErrorMessage = message
+                }
+            },
             onNewChat: { startNewChat() },
             onDeleteConversation: { id in deleteChat(id) },
             currentUserName: appEnvironment.personaStore.userName.isEmpty ? "You" : appEnvironment.personaStore.userName,
@@ -97,17 +103,31 @@ struct ContentView: View {
                         fromEntities: appEnvironment.memoryStore.allEntities(),
                         activeFacts: appEnvironment.memoryStore.activeFacts()
                     )
-                    guard let data = try? JSONEncoder().encode(export) else { return }
+                    let data: Data
+                    do { data = try JSONEncoder().encode(export) } catch {
+                        appErrorMessage = "Could not export memory: encoding failed (\(error.localizedDescription))."
+                        return
+                    }
                     let panel = NSSavePanel()
                     panel.allowedContentTypes = [.json]
                     panel.nameFieldStringValue = "AICompleteChat-Memory.json"
                     if panel.runModal() == .OK, let url = panel.url {
-                        try? data.write(to: url)
+                        do { try data.write(to: url) } catch {
+                            appErrorMessage = "Could not save the memory export to \(url.lastPathComponent): \(error.localizedDescription)"
+                        }
                     }
                 },
                 onBrowseMemory: { showMemoryBrowser = true },
                 onDismiss: { showSettings = false }
             ))
+        }
+        .alert("Something went wrong", isPresented: Binding(
+            get: { appErrorMessage != nil },
+            set: { if !$0 { appErrorMessage = nil } }
+        )) {
+            Button("OK") { appErrorMessage = nil }
+        } message: {
+            Text(appErrorMessage ?? "")
         }
         .alert("Dictation Unavailable", isPresented: Binding(
             get: { voiceErrorMessage != nil },

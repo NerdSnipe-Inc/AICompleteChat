@@ -22,13 +22,23 @@ final class ChatRecord {
 
     var storedMessages: [StoredMessage] {
         get {
-            guard let messagesData, let decoded = try? JSONDecoder().decode([StoredMessage].self, from: messagesData) else {
+            guard let messagesData else { return [] }
+            do {
+                return try JSONDecoder().decode([StoredMessage].self, from: messagesData)
+            } catch {
+                // A chat that decodes to [] looks empty to the user — make the corruption visible.
+                Logger(subsystem: "cc.nerdsnipe.AICompleteChat", category: "ChatHistoryStore")
+                    .error("Stored messages for chat \(self.id) are undecodable: \(String(describing: error), privacy: .public)")
                 return []
             }
-            return decoded
         }
         set {
-            messagesData = try? JSONEncoder().encode(newValue)
+            do {
+                messagesData = try JSONEncoder().encode(newValue)
+            } catch {
+                Logger(subsystem: "cc.nerdsnipe.AICompleteChat", category: "ChatHistoryStore")
+                    .error("Could not encode messages for chat \(self.id); keeping previous data: \(String(describing: error), privacy: .public)")
+            }
         }
     }
 
@@ -73,7 +83,12 @@ final class ChatHistoryStore {
     private static func onDiskStoreURL() -> URL {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         let hostDirectory = appSupport.appendingPathComponent("com.nerdsnipe.aicompletechat", isDirectory: true)
-        try? FileManager.default.createDirectory(at: hostDirectory, withIntermediateDirectories: true)
+        do {
+            try FileManager.default.createDirectory(at: hostDirectory, withIntermediateDirectories: true)
+        } catch {
+            Logger(subsystem: "cc.nerdsnipe.AICompleteChat", category: "ChatHistoryStore")
+                .error("cannot create history directory: \(error.localizedDescription, privacy: .public)")
+        }
         let newURL = hostDirectory.appendingPathComponent("AICompleteChatHistory.store")
         migrateFromUnnamespacedLocation(appSupport: appSupport, to: newURL)
         return newURL
@@ -91,21 +106,34 @@ final class ChatHistoryStore {
         for suffix in ["", "-shm", "-wal"] {
             let source = URL(fileURLWithPath: oldURL.path + suffix)
             let destination = URL(fileURLWithPath: newURL.path + suffix)
-            try? FileManager.default.moveItem(at: source, to: destination)
+            guard FileManager.default.fileExists(atPath: source.path) else { continue }
+            do { try FileManager.default.moveItem(at: source, to: destination) } catch {
+                Logger(subsystem: "cc.nerdsnipe.AICompleteChat", category: "ChatHistoryStore")
+                    .error("legacy history migration failed for \(source.lastPathComponent, privacy: .public): \(error.localizedDescription, privacy: .public)")
+            }
+        }
+    }
+
+    private func persist() {
+        do { try context.save() } catch {
+            logger.error("saving chat history failed: \(String(describing: error), privacy: .public)")
         }
     }
 
     /// All persisted chats, most recently updated first.
     func allChats() -> [ChatRecord] {
         let descriptor = FetchDescriptor<ChatRecord>(sortBy: [SortDescriptor(\.updatedAt, order: .reverse)])
-        return (try? context.fetch(descriptor)) ?? []
+        do { return try context.fetch(descriptor) } catch {
+            logger.error("fetching chats failed: \(String(describing: error), privacy: .public)")
+            return []
+        }
     }
 
     @discardableResult
     func createChat() -> ChatRecord {
         let chat = ChatRecord(title: "New Chat")
         context.insert(chat)
-        try? context.save()
+        persist()
         return chat
     }
 
@@ -127,13 +155,13 @@ final class ChatHistoryStore {
         if chat.title == "New Chat", let firstUserText = messages.first(where: { $0.role == "user" })?.content {
             chat.title = String(firstUserText.prefix(48))
         }
-        try? context.save()
+        persist()
         return true
     }
 
     func delete(id: UUID) {
         guard let chat = chat(id: id) else { return }
         context.delete(chat)
-        try? context.save()
+        persist()
     }
 }
