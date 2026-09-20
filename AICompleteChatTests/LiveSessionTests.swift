@@ -131,6 +131,26 @@ private struct SilentProvider: ChatProvider {
     }
 }
 
+/// Forwards to the real provider and records the messages of every `stream` call.
+private final class RecordingProvider: ChatProvider, @unchecked Sendable {
+    let inner: MLXProvider
+    private let lock = NSLock()
+    private var calls: [[ChatMessage]] = []
+    init(inner: MLXProvider) { self.inner = inner }
+    var received: [[ChatMessage]] { lock.withLock { calls } }
+    var id: String { inner.id }
+    var name: String { inner.name }
+    var zeroResponseMessage: String { inner.zeroResponseMessage }
+    func stream(messages: [ChatMessage], model: String, options: ChatRequestOptions)
+        -> AsyncThrowingStream<ChatStreamEvent, Error> {
+        lock.withLock { calls.append(messages) }
+        return inner.stream(messages: messages, model: model, options: options)
+    }
+    func complete(messages: [ChatMessage], model: String, options: ChatRequestOptions) async throws -> ChatCompletionResult {
+        try await inner.complete(messages: messages, model: model, options: options)
+    }
+}
+
 @MainActor
 @Suite("Live ChatSession + gemma-4-e4b", .serialized, .enabled(if: LiveModel.isCached, "gemma-4-e4b-it-4bit not in HF cache"))
 struct LiveSessionTests {
@@ -444,5 +464,69 @@ struct LiveSessionTests {
         H.dump("system", s)
         H.assertSettled(s)
         #expect(H.aiTexts(s).joined().uppercased().contains("ZEBRA"))
+    }
+
+    // MARK: (k) cancel before any output
+
+    /// Roles the provider saw, minus any system message.
+    private func roles(_ m: [ChatMessage]) -> [ChatMessage.Role] { m.map(\.role).filter { $0 != .system } }
+
+    private func assertStrictAlternation(_ m: [ChatMessage], sourceLocation: SourceLocation = #_sourceLocation) {
+        let r = roles(m)
+        #expect(r.first == .user, "history must start with a user turn: \(r)", sourceLocation: sourceLocation)
+        for (a, b) in zip(r, r.dropFirst()) {
+            #expect(a != b, "consecutive \(a) turns reached the provider: \(r)", sourceLocation: sourceLocation)
+        }
+    }
+
+    private func cancelResendCycles(tag: String, cycles: Int, cancelAfterMs: Int) async {
+        let rec = RecordingProvider(inner: H.provider(maxTokens: 64))
+        let s = H.session(rec)
+        for i in 1...cycles {
+            #expect(s.send("Write a very long story number \(i) about dragons."))
+            if cancelAfterMs > 0 { try? await Task.sleep(for: .milliseconds(cancelAfterMs)) }
+            let producedOutput = !H.aiTexts(s).isEmpty || !H.reasoning(s).isEmpty
+            s.cancel()
+            print("[live/\(tag)] cycle \(i): cancelled (output already produced=\(producedOutput))")
+            H.assertSettled(s)
+            #expect(s.error == nil)
+
+            let word = ["banana", "pineapple", "walnut"][(i - 1) % 3]
+            #expect(s.send("Reply with exactly one word: \(word)"))
+            await H.drive(s)
+            H.dump("\(tag)#\(i)", s)
+            H.assertSettled(s)
+            #expect(s.error == nil, "session.error after follow-up: \(String(describing: s.error))")
+            let reply = H.aiTexts(s).last ?? ""
+            #expect(reply.lowercased().contains(word), "follow-up not answered sensibly: \(reply.debugDescription)")
+            #expect(!reply.contains("<start_of_turn>") && !reply.contains("<end_of_turn>") && !reply.lowercased().contains("template"),
+                    "raw template/error text leaked: \(reply.debugDescription)")
+            #expect(!H.activities(s).contains { $0.isError }, "error row shown")
+            if !producedOutput {
+                // Cancelled before output: the orphaned user turn must not reach the provider.
+                let last = rec.received.last ?? []
+                assertStrictAlternation(last)
+            }
+        }
+        for call in rec.received { assertStrictAlternation(call) }
+        print("[live/\(tag)] provider saw roles per call: \(rec.received.map { roles($0).map(\.rawValue) })")
+        #expect(H.userCount(s) == cycles * 2)
+        let cancelledCount = s.entries.filter { if case .userMessage(let u) = $0 { return u.isCancelled } else { return false } }.count
+        #expect(cancelledCount >= 0 && cancelledCount <= cycles)
+    }
+
+    @Test("cancel right after send, then follow-up: model answers, roles alternate", .timeLimit(.minutes(8)))
+    func cancelImmediatelyThenFollowUp() async {
+        await cancelResendCycles(tag: "cancel-now", cycles: 1, cancelAfterMs: 0)
+    }
+
+    @Test("cancel shortly after send (still before output), then follow-up", .timeLimit(.minutes(8)))
+    func cancelShortlyThenFollowUp() async {
+        await cancelResendCycles(tag: "cancel-soon", cycles: 1, cancelAfterMs: 250)
+    }
+
+    @Test("three cancel/resend cycles in one session leak no state", .timeLimit(.minutes(10)))
+    func cancelResendThreeCycles() async {
+        await cancelResendCycles(tag: "cancel-x3", cycles: 3, cancelAfterMs: 0)
     }
 }
