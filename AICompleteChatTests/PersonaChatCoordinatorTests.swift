@@ -45,7 +45,8 @@ struct PersonaChatCoordinatorTests {
         coordinator.onMemoryUpdated = { wasCalled = true }
 
         coordinator.send("Hello")
-        try await Task.sleep(nanoseconds: 500_000_000)
+        // Poll instead of a fixed sleep: under parallel suites (main actor busy) 500 ms was flaky.
+        _ = await PersonaLive.wait(seconds: 15) { wasCalled }
 
         #expect(wasCalled)
     }
