@@ -36,9 +36,15 @@ final class AppEnvironment {
 
     private static let logger = Logger(subsystem: "cc.nerdsnipe.AICompleteChat", category: "AppEnvironment")
 
+    /// Opt-in: put a FunctionGemma tool router in front of the chat model (see AIChatKitMLX
+    /// `docs/TOOL_ROUTING.md`). Off by default; enable with `defaults write <bundle-id>
+    /// AICOMPLETECHAT_TOOL_ROUTING -bool YES`. Only matters once the session has tools.
+    static let usesToolRouting = UserDefaults.standard.bool(forKey: "AICOMPLETECHAT_TOOL_ROUTING")
+
     init() {
         let mlxProvider = MLXProvider() // defaults to MLXProvider.recommendedModelId() = gemma-4-e4b-it-4bit
-        let session = ChatSession(provider: mlxProvider, model: MLXProvider.recommendedModelId())
+        let chatProvider: any ChatProvider = Self.usesToolRouting ? ToolRoutingProvider.onDevice() : mlxProvider
+        let session = ChatSession(provider: chatProvider, model: MLXProvider.recommendedModelId())
         let memoryStore = MemoryGraphStore.shared
         let retrieval = RetrievalService(store: memoryStore)
         let personaStore = PersonaStore.shared
