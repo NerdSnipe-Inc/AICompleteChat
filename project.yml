@@ -55,6 +55,10 @@ targets:
       path: AICompleteChat/Info.plist
       properties:
         CFBundleDisplayName: AICompleteChat
+        # Must reference the build settings: literal values here get baked into Info.plist and the
+        # MARKETING_VERSION that scripts/release.sh passes to xcodebuild never reaches the app.
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSMinimumSystemVersion: "15.0"
         NSMicrophoneUsageDescription: "AICompleteChat uses your microphone for voice dictation and voice commands."
         NSSpeechRecognitionUsageDescription: "AICompleteChat uses on-device speech recognition to turn your voice into text."
