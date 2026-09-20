@@ -1,5 +1,10 @@
 # AICompleteChat
 
+[![Platform](https://img.shields.io/badge/platform-macOS%2015%2B-blue)](https://github.com/NerdSnipe-Inc/AICompleteChat)
+[![Swift](https://img.shields.io/badge/Swift-6.0-orange)](https://github.com/NerdSnipe-Inc/AICompleteChat)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Built with DesignFoundationPro](https://img.shields.io/badge/built%20with-DesignFoundationPro-8A2BE2)](https://nerdsnipe.cc/design-foundation-pro)
+
 A full-source, production-quality example of a fully on-device AI chat app for macOS. No cloud
 dependency once the model is downloaded — chat, voice dictation, and memory all run locally.
 
