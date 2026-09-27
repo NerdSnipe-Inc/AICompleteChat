@@ -15,6 +15,10 @@ import os
 @Observable
 final class AppEnvironment {
     let mlxProvider: MLXProvider
+    /// Owns the on-device model's files: what's on disk, downloading, failed. Downloads go through
+    /// here (retry with backoff, wait while offline, stall detection, resume after a quit) and never
+    /// through `MLXProvider.loadModel`, which is only asked to load weights already on disk.
+    let modelManager = MLXModelManager()
     let session: ChatSession
     let memoryStore: MemoryGraphStore
     let retrieval: RetrievalService
@@ -210,9 +214,15 @@ final class AppEnvironment {
     }
 
     func loadModel() async {
+        let modelId = MLXProvider.recommendedModelId()
+        modelManager.track([modelId])   // seeds state from what is actually on disk
+        if modelManager.state(for: modelId) != .downloaded {
+            guard await downloadModel(modelId) else { return }
+        }
         modelLoadState = .downloading(progress: 0)
         do {
-            try await mlxProvider.loadModel { progress in
+            // The weights are on disk, so this never starts a hidden download.
+            try await mlxProvider.loadModel(downloadIfNeeded: false) { progress in
                 Task { @MainActor in
                     self.modelLoadState = .downloading(progress: progress.fractionCompleted)
                 }
@@ -228,5 +238,37 @@ final class AppEnvironment {
                 modelLoadState = .error(message)
             }
         }
+    }
+
+    /// Downloads `modelId` through `modelManager`, mirroring its progress into `modelLoadState`.
+    /// Returns `true` once the weights are complete on disk; otherwise `modelLoadState` is `.error`.
+    /// Safe to call while a download is already running (e.g. Reload Model tapped mid-download):
+    /// the manager treats that as a no-op, so this just keeps following the live state.
+    private func downloadModel(_ modelId: String) async -> Bool {
+        modelLoadState = .downloading(progress: 0)
+        var requestReturned = false
+        let request = Task { @MainActor in
+            await modelManager.download(modelId: modelId)
+            requestReturned = true
+        }
+        while true {
+            let state = modelManager.state(for: modelId)
+            if case .downloading(let progress) = state {
+                modelLoadState = .downloading(progress: progress ?? 0)
+            } else if requestReturned {
+                break
+            }
+            try? await Task.sleep(for: .milliseconds(250))
+        }
+        await request.value
+        switch modelManager.state(for: modelId) {
+        case .downloaded:
+            return true
+        case .failed(let reason):
+            modelLoadState = .error("\(reason) Choose Reload Model to try again.")
+        case .notDownloaded, .downloading:
+            modelLoadState = .error("The model download did not finish. Choose Reload Model to try again.")
+        }
+        return false
     }
 }
