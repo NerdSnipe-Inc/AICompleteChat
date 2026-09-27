@@ -9,6 +9,8 @@
 # ~/.appstoreconnect/private_keys/AuthKey_XBLUUZUD2M.p8 (the same one Xcode's own Accounts/
 # Organizer flow uses) — nothing to set up separately, no notarytool store-credentials needed.
 #
+# The release notes are the "## [VERSION]" section of CHANGELOG.md; the script refuses to run without one.
+#
 # Usage: scripts/release.sh 1.2.0   (tags v1.2.0, builds HEAD, publishes the release)
 set -euo pipefail
 
@@ -60,6 +62,17 @@ fi
 
 WORK_DIR="$(mktemp -d)"
 trap 'rm -rf "$WORK_DIR"' EXIT
+
+echo "==> Release notes from CHANGELOG.md"
+NOTES_FILE="$WORK_DIR/release-notes.md"
+awk -v ver="$VERSION" '
+  $0 ~ "^## \\[" ver "\\]" { on=1; next }
+  on && /^## \[/ { exit }
+  on { print }
+' CHANGELOG.md | sed -e '/./,$!d' > "$NOTES_FILE"
+[[ -s "$NOTES_FILE" ]] || { echo "CHANGELOG.md has no '## [$VERSION]' section — write the release notes first" >&2; exit 1; }
+sed -i '' 's/^### /## /' "$NOTES_FILE"
+printf '\nSigned, notarized macOS build. Download, unzip, and run directly — no DesignFoundationPro license needed to run this binary, only to build from source.\n' >> "$NOTES_FILE"
 
 echo "==> Generating Xcode project"
 xcodegen generate
@@ -133,7 +146,7 @@ echo "==> Publishing GitHub release"
 gh release create "$TAG" "$ZIP_NAME" \
   --title "$TAG" \
   --generate-notes \
-  --notes "Signed, notarized macOS build. Download, unzip, and run directly — no DesignFoundationPro license needed to run this binary, only to build from source."
+  --notes-file "$NOTES_FILE"
 
 rm -f "$ZIP_NAME"
 echo "==> Done: https://github.com/NerdSnipe-Inc/AICompleteChat/releases/tag/$TAG"
