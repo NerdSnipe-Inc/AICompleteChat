@@ -23,7 +23,7 @@ Model downloads recover from trouble, and the AI packages move to their latest r
   with a “Not answered — the model won't see this message” caption. Resend it to retry. (AIChatKit 2.0.0.)
 - **Gemma tool calls the model writes as text** (`<tool_call>` XML and `tool_code` blocks) are recovered as real tool
   calls while streaming, so the raw text never shows in the chat. (AIChatKitMLX 1.4.0.)
-- Packages: AIChatKit 2.0.0, AIChatKitMLX 1.4.0, AiPersona 1.1.1.
+- Packages: AIChatKit 2.0.0, AIChatKitMLX 1.4.1, AiPersona 1.1.1.
 
 ### Upgrading from 1.3.x
 - Nothing to do. If a model download was left partly finished, the app downloads it again from scratch the next

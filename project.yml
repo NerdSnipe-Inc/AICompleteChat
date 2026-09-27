@@ -21,7 +21,7 @@ packages:
     from: 2.0.0
   AIChatKitMLX:
     url: https://github.com/NerdSnipe-Inc/AIChatKitMLX.git
-    from: 1.4.0
+    from: 1.4.1
   AiPersona:
     url: https://github.com/NerdSnipe-Inc/AiPersona.git
     from: 1.1.1
